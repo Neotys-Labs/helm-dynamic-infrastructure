@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nlweb.fullname" . }}
+  labels:
+    {{- include "nlweb.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "nlweb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "nlweb.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "nlweb.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-backend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.backend.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          env:
+            - name: MEMORY_MAX
+              value: {{ .Values.neoload.configuration.backend.java.xmx }}
+            - name: MONGODB_HOST
+              value: {{ .Values.neoload.configuration.backend.mongo.host | required "MongoDb host (.Values.neoload.configuration.backend.mongo.host) value is required." | quote }}
+            - name: MONGODB_PORT
+              value: {{ .Values.neoload.configuration.backend.mongo.port | quote }}
+            - name: MONGODB_LOGIN
+              value: {{ .Values.neoload.configuration.backend.mongo.user | quote }}
+            - name: MONGODB_PASSWORD
+              value: {{ .Values.neoload.configuration.backend.mongo.password | quote }}
+            - name: MONGODB_MAX_POOLSIZE
+              value: {{ .Values.neoload.configuration.backend.mongo.poolSize | quote }}
+            - name: NEOLOAD_WEB_PUBLIC_URL
+              value: {{ .Values.neoload.configuration.backend.urls.front | required "NeoLoad Web Public URL (.Values.neoload.configuration.backend.urls.front) value is required." | quote }}
+            - name: NEOLOAD_WEB_API_PUBLIC_URL
+              value: {{ .Values.neoload.configuration.backend.urls.api | required "NeoLoad Web API URL (.Values.neoload.configuration.backend.urls.api) value is required." | quote }}
+            - name: FILE_STORAGE_ROUTER_BASE_URL
+              value: {{ .Values.neoload.configuration.backend.urls.files | required "NeoLoad Web Files API URL (.Values.neoload.configuration.backend.urls.files) value is required." | quote }}
+            - name: FILE_PROJECT_MAX_SIZE_IN_BYTES
+              value: {{ .Values.neoload.configuration.backend.misc.files.maxUploadSizeInBytes | quote }}
+            - name: NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK
+              value: {{ .Values.neoload.configuration.backend.misc.files.maxUploadPerWeek | quote }}
+            - name: SEND_USAGE_STATISTICS
+              value: {{ .Values.neoload.configuration.backend.misc.sendUsageStatistics | quote }}
+            - name: NLWEB_SECRET_KEY
+              value: {{ .Values.neoload.configuration.backend.misc.secretKey }}
+          ports:
+            - name: api
+              containerPort: 1081
+              protocol: TCP
+            - name: files
+              containerPort: 1082
+              protocol: TCP
+            - name: backend-admin
+              containerPort: 9092
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: api
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: api
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources.backend | nindent 12 }}
+        - name: {{ .Chart.Name }}-frontend
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.frontend.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.frontend.pullPolicy }}
+          env:
+          - name: MEMORY_MAX
+            value: {{ .Values.neoload.configuration.frontend.java.xmx }}
+          ports:
+            - name: webapp
+              containerPort: 9090
+              protocol: TCP
+            - name: frontend-admin
+              containerPort: 9091
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: webapp
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: webapp
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources.frontend | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

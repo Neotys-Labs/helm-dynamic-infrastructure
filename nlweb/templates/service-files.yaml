@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "nlweb.fullname" . }}-files-svc
+  labels:
+    {{- include "nlweb.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.service.files.port }}
+      targetPort: files
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "nlweb.selectorLabels" . | nindent 4 }}

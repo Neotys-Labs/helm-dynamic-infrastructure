@@ -3,7 +3,7 @@ entries:
   nlweb-dynamic-infrastructure-user:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2020-01-24T14:30:21.625288357+01:00"
+    created: "2020-01-24T14:52:10.61099387+01:00"
     description: A Helm chart for Kubernetes
     digest: a31c912c78801cb00b599293546a184951c6ac81f3eeaadff7f68a9891f2e1df
     name: nlweb-dynamic-infrastructure-user
@@ -11,4 +11,4 @@ entries:
     urls:
     - https://sylvain-brun-neotys.github.io/helm/nlweb-dynamic-infrastructure-user/nlweb-dynamic-infrastructure-user-0.1.0.tgz
     version: 0.1.0
-generated: "2020-01-24T14:30:21.624943173+01:00"
+generated: "2020-01-24T14:52:10.610640114+01:00"

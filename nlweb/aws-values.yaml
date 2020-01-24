@@ -1,0 +1,111 @@
+# Default values for nlweb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  backend:
+    repository: neotys/neoload-web-backend
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: neotys/neoload-web-frontend
+    pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  api:
+    type: NodePort
+    port: 80
+  files:
+    type: NodePort
+    port: 80
+  webapp:
+    type: NodePort
+    port: 80
+
+ingress:
+  enabled: true
+  class: alb
+  annotations: {}
+  front:
+    host: neoloadweb.mycompany.com
+    
+resources:
+  backend:
+    requests:
+      cpu: 500m
+      memory: 2Gi
+    limits:
+      cpu: 2
+      memory: 3Gi
+  frontend:
+    requests:
+      cpu: 500m
+      memory: 900Mi
+    limits:
+      cpu: 2
+      memory: 2Gi
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+neoload:
+  configuration:
+    backend:
+      mongo:
+        host: integration-tests-shard-00-00-dgfcu.mongodb.net:27017,integration-tests-shard-00-01-dgfcu.mongodb.net:27017,integration-tests-shard-00-02-dgfcu.mongodb.net:27017/test?ssl=true&replicaSet=integration-tests-shard-0&authSource=admin&retryWrites=true&w=majority
+        port: 0
+        user: eksadmin
+        password: xSejNFytOBtXxI7y
+        poolSize: 50
+      java:
+        xmx: 1800m
+      urls:
+        front: http://neoloadweb.mycompany.com/
+        api: http://api.neoloadweb.mycompany.com/
+        files: http://files.neoloadweb.mycompany.com/
+      misc:
+        files:
+          maxUploadSizeInBytes: 250000000
+          maxUploadPerWeek: 250
+        sendUsageStatistics: true
+        secretKey: awssecretkey
+    frontend:
+      java:
+        xmx: 900m
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

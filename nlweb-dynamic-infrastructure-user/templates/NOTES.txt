@@ -1,0 +1,8 @@
+1. Get the Kubernetes master URL by running this command:
+kubectl cluster-info | grep 'Kubernetes master'
+
+2. Kubernetes namespace is:
+{{ .Values.name }}
+
+3. Get the API token to use by running this command:
+kubectl get secret $(kubectl get serviceaccounts {{ .Values.name }}-sa -o jsonpath='{.secrets[].name}' -n {{ .Values.name }}) -o jsonpath='{.data.token}' -n {{ .Values.name }} | base64 --decode

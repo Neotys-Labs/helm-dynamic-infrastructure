@@ -34,21 +34,37 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  api:
-    type: NodePort
-    port: 80
-  files:
-    type: NodePort
-    port: 80
+services:
   webapp:
-    type: NodePort
+    host: neoload-web.mycompany.com
+    type: ClusterIP
     port: 80
+    ingress:
+      paths: [""]
+  api:
+    host: neoload-web-api.mycompany.com
+    type: ClusterIP
+    port: 80
+    ingress:
+      paths: [""]
+  files:
+    host: neoload-web-files.mycompany.com
+    type: ClusterIP
+    port: 80
+    ingress:
+      paths: [""]
 
 ingress:
-  enabled: false
-  class:
-  annotations: {}
+  enabled: true
+  class: nginx
+  annotations:
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+      nginx.ingress.kubernetes.io/rewrite-target: /
+  tls:
+    - secretName: tls-secret
+      secretCertificate: 
+      secretKey: 
 
 resources:
   backend:
@@ -76,31 +92,48 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
+### Dependencies configuration
+# MongoDB is required but its enablement here is discouraged 
+# as it requires a fine-tuned installation environment with the right resources
+# DO NOT USE IN PRODUCTION
+mongodb:
+  enabled: false
+  usePassword: true
+  clusterDomain: cluster.local
+
+
+# Installs nginx-ingress controller as the load balancer / router for the application
+# Disable if you rely upon other load balancer for routing to the app ingress
+nginx-ingress:
+  enabled: false
+  controller:
+    service:
+      annotations: 
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      externalTrafficPolicy: Local
+      omitClusterIp: true
+  defaultBackend:
+    enabled: false
+
+
+# NLWeb configuration
 neoload:
   configuration:
     backend:
       mongo:
-        host:
-        port:
-        user:
-        password:
+        host: mymongodb.mongodb.svc.cluster.local
+        port: 27017
         poolSize: 50
       java:
         xmx: 1800m
-      urls:
-        front:
-        api:
-        files:
       misc:
         files:
-          maxUploadSizeInBytes: 250000000
-          maxUploadPerWeek: 250
+          maxUploadSizeInBytes: "250000000"
+          maxUploadPerWeek: "250"
         sendUsageStatistics: true
-        secretKey:
     frontend:
       java:
         xmx: 900m
-
 
 nodeSelector: {}
 

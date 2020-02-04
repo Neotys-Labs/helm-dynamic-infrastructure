@@ -61,3 +61,28 @@ Create the name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+MongoDB host
+*/}}
+{{- define "nlweb.mongodb.host" -}}
+{{- if .Values.mongodb.enabled -}}
+    {{ template "mongodb.serviceName" . }}.{{ .Release.Namespace }}.svc.{{ .Values.mongodb.clusterDomain }}
+{{- else -}}
+    {{ .Values.neoload.configuration.backend.mongo.host }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+URL Helper - getScheme
+*/}}
+{{- define "nlweb.url.getScheme" -}}
+    http
+    {{- if .Values.ingress.enabled -}}
+    {{- if .Values.ingress.tls -}}
+        s
+    {{- end -}}
+    {{- end -}}
+    ://
+{{- end -}}
+

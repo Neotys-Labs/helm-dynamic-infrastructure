@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "nlweb.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "nlweb.fullname" . }}:{{ .Values.services.webapp.port }}']
   restartPolicy: Never

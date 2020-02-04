@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "nlweb.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "nlweb.labels" . | nindent 4 }}
 spec:
@@ -31,29 +32,40 @@ spec:
             - name: MEMORY_MAX
               value: {{ .Values.neoload.configuration.backend.java.xmx }}
             - name: MONGODB_HOST
-              value: {{ .Values.neoload.configuration.backend.mongo.host | required "MongoDb host (.Values.neoload.configuration.backend.mongo.host) value is required." | quote }}
+              value: {{ include "nlweb.mongodb.host" . | required "MongoDb host (.Values.neoload.configuration.backend.mongo.host) value is required." | quote }}
             - name: MONGODB_PORT
               value: {{ .Values.neoload.configuration.backend.mongo.port | quote }}
+            {{- if .Values.mongodb.usePassword }}
             - name: MONGODB_LOGIN
-              value: {{ .Values.neoload.configuration.backend.mongo.user | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "nlweb.fullname" . }}-mongo-secret
+                  key: username
             - name: MONGODB_PASSWORD
-              value: {{ .Values.neoload.configuration.backend.mongo.password | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "nlweb.fullname" . }}-mongo-secret
+                  key: password
+            {{- end }}
             - name: MONGODB_MAX_POOLSIZE
               value: {{ .Values.neoload.configuration.backend.mongo.poolSize | quote }}
             - name: NEOLOAD_WEB_PUBLIC_URL
-              value: {{ .Values.neoload.configuration.backend.urls.front | required "NeoLoad Web Public URL (.Values.neoload.configuration.backend.urls.front) value is required." | quote }}
+              value: {{ printf "%s%s" (include "nlweb.url.getScheme" .) (.Values.services.webapp.host) | required "NeoLoad Web Public URL (.Values.services.webapp.host) value is required." | quote }}
             - name: NEOLOAD_WEB_API_PUBLIC_URL
-              value: {{ .Values.neoload.configuration.backend.urls.api | required "NeoLoad Web API URL (.Values.neoload.configuration.backend.urls.api) value is required." | quote }}
+              value: {{ printf "%s%s" (include "nlweb.url.getScheme" .) (.Values.services.api.host) | required "NeoLoad Web API URL (.Values.services.api.host) value is required." | quote }}
             - name: FILE_STORAGE_ROUTER_BASE_URL
-              value: {{ .Values.neoload.configuration.backend.urls.files | required "NeoLoad Web Files API URL (.Values.neoload.configuration.backend.urls.files) value is required." | quote }}
+              value: {{ printf "%s%s" (include "nlweb.url.getScheme" .) (.Values.services.files.host) | required "NeoLoad Web Files API URL (.Values.services.webapp.host) value is required." | quote }}
             - name: FILE_PROJECT_MAX_SIZE_IN_BYTES
-              value: {{ .Values.neoload.configuration.backend.misc.files.maxUploadSizeInBytes | quote }}
+              value: {{ int .Values.neoload.configuration.backend.misc.files.maxUploadSizeInBytes | quote }}
             - name: NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK
-              value: {{ .Values.neoload.configuration.backend.misc.files.maxUploadPerWeek | quote }}
+              value: {{ int .Values.neoload.configuration.backend.misc.files.maxUploadPerWeek | quote }}
             - name: SEND_USAGE_STATISTICS
               value: {{ .Values.neoload.configuration.backend.misc.sendUsageStatistics | quote }}
             - name: NLWEB_SECRET_KEY
-              value: {{ .Values.neoload.configuration.backend.misc.secretKey }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "nlweb.fullname" . }}-key-secret
+                  key: nlwSecretKey
           ports:
             - name: api
               containerPort: 1081

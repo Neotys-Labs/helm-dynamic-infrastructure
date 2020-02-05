@@ -28,7 +28,7 @@ spec:
       {{- end }}
       {{- else -}}
       {{- range $label, $service := $.Values.services }}
-        - {{ $service.host | quote }}
+        - {{ $service.host | required (printf "The service host (services.%s.host) is required." $label) | quote }}
       {{- end }}
       {{- end -}}
   {{- end }}

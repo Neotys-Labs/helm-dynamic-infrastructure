@@ -32,9 +32,9 @@ spec:
             - name: MEMORY_MAX
               value: {{ .Values.neoload.configuration.backend.java.xmx }}
             - name: MONGODB_HOST
-              value: {{ include "nlweb.mongodb.host" . | required "MongoDb host (.Values.neoload.configuration.backend.mongo.host) value is required." | quote }}
+              value: {{ .Values.neoload.configuration.backend.mongo.host | required "MongoDb host (.Values.neoload.configuration.backend.mongo.host) value is required." | quote }}
             - name: MONGODB_PORT
-              value: {{ .Values.neoload.configuration.backend.mongo.port | quote }}
+              value: {{ default 27017 .Values.neoload.configuration.backend.mongo.port | quote }}
             {{- if .Values.mongodb.usePassword }}
             - name: MONGODB_LOGIN
               valueFrom:

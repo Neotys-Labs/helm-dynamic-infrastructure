@@ -49,13 +49,13 @@ Parameter | Description | Default
 `image.frontend.repository` | The frontend image repository to pull from | `neotys/neoload-web-backend`
 `image.frontend.pullPolicy` | The frontend image pull policy | `IfNotPresent`
 `imagePullSecrets` | The image pull secrets | `[]`
------ | ----------- | -------
+ |  | 
 `serviceAccount.create` | Specifies whether a service account should be created | `true`
 `serviceAccount.name` | The name of the service account to use | 
------ | ----------- | -------
+ |  | 
 `podSecurityContext`| The pod security context | `{}`
 `securityContext` | The security context | `{}`
------ | ----------- | -------
+ |  | 
 `services.webapp.host` | The hostname for the webapp/front deployment | 
 `services.webapp.type` | The service type for the webapp/front deployment | `ClusterIP`
 `services.webapp.port` | The service port for the webapp/front deployment | `80`
@@ -68,14 +68,14 @@ Parameter | Description | Default
 `services.files.type` | The service type for the files deployment | `ClusterIP`
 `services.files.port` | The service port for the files deployment | `80`
 `services.files.ingress.paths` | The path mapping for the files ingress | `[""]`
------ | ----------- | -------
+ |  | 
 `ingress.enabled` | Enable ingresses | `true`
 `ingress.class` | Specifies which ingress controller class should listen to this ingress | `nginx`
 `ingress.annotations` | Annotations for configuring the ingress | `{}`
 `ingress.tls[0].secretName` | The name of your TLS secret | `{}`
 `ingress.tls[0].secretCertificate` | The content of your imported certificate | `{}`
 `ingress.tls[0].secretKey` | The content of your imported private key | `{}`
------ | ----------- | -------
+ |  | 
 `resources.backend.requests.cpu` | CPU resource requests for the backend | `500m`
 `resources.backend.requests.memory` | Memory resource requests for the backend | `2Gi`
 `resources.backend.limits.cpu` | CPU resource requests for the backend | `2`
@@ -84,7 +84,7 @@ Parameter | Description | Default
 `resources.frontend.requests.memory` | Memory resource requests for the frontend | `900Mi`
 `resources.frontend.limits.cpu` | CPU resource requests for the frontend | `2`
 `resources.frontend.limits.memory` | Memory resource requests for the frontend | `2Gi`
------ | ----------- | -------
+ |  | 
 `neoload.configuration.backend.mongo.host` | MongoDB host | 
 `neoload.configuration.backend.mongo.port` | MongoDB port | `27017`
 `neoload.configuration.backend.mongo.poolSize` | MongoDB pool size | `50`
@@ -93,11 +93,11 @@ Parameter | Description | Default
 `neoload.configuration.backend.misc.files.maxUploadPerWeek` | Max file upload count per week | `250`
 `neoload.configuration.backend.misc.sendUsageStatistics` | Max file upload count per week | `250`
 `neoload.configuration.frontend.java.xmx` | Java JVM Max heap size for the frontend | `900m`
------ | ----------- | -------
-`mongodb.usePassword` | Set to false if your MongoDB connection doesn't require authentication | `false`
+ |  | 
+`mongodb.usePassword` | Set to false if your MongoDB connection doesn't require authentication | `true`
 `mongodb.mongodbUsername` | MongoDB Username | 
 `mongodb.mongodbPassword` | MongoDB Password | 
------ | ----------- | -------
+ |  | 
 `nodeSelector` | Node Selector | `{}`
 `tolerations` | Pod's tolerations | `[]`
 

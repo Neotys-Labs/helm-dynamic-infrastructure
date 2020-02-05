@@ -1,7 +1,7 @@
 1. Get the application URL by running these commands:
 {{- if .Values.ingress.enabled }}
 {{- range $label, $service := .Values.services }}
-  {{ include "nlweb.url.getScheme" $ }}{{ $service.host }}
+  {{ include "nlweb.helpers.getScheme" $ }}{{ $service.host }}
 {{- end }}
 {{- else if contains "NodePort" .Values.services.webapp.type }}
   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "nlweb.fullname" . }})

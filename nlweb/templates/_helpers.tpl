@@ -74,9 +74,21 @@ MongoDB host
 {{- end -}}
 
 {{/*
-URL Helper - getScheme
+Helper - stringToStrings
 */}}
-{{- define "nlweb.url.getScheme" -}}
+{{- define "nlweb.helpers.stringToStrings" -}}
+
+    {{ $array := regexSplit "\\." . -1 }}
+    {{- range $array }}
+        "{{ . }}" 
+    {{ end -}}
+
+{{- end -}}
+
+{{/*
+Helper - getScheme
+*/}}
+{{- define "nlweb.helpers.getScheme" -}}
     http
     {{- if .Values.ingress.enabled -}}
     {{- if .Values.ingress.tls -}}
@@ -84,5 +96,31 @@ URL Helper - getScheme
     {{- end -}}
     {{- end -}}
     ://
+{{- end -}}
+
+{{/*
+Helper - minLength (name, min, context)
+*/}}
+{{- define "nlweb.helpers.minLength" -}}
+
+    {{ $name := index . "name" }}
+    {{ $min := int (index . "min") }}
+    {{ $context := index . "context" }}
+
+    {{ $indexableName := (include "nlweb.helpers.stringToStrings" $name) }}
+
+    {{ $val := default "" (index $context $indexableName) }}
+    {{ $length := len $val }}
+
+    {{- if ge $length $min -}}
+        {{ $val }}
+    {{- else -}}
+        {{- if eq $length 0 -}}
+            {{ "" | required (printf "The value %s is required" $name) }}
+        {{- else -}}
+            {{ "" | required (printf "The value %s should be at least %d character(s)" $name $min) }}
+        {{- end -}}
+    {{- end -}}
+
 {{- end -}}
 

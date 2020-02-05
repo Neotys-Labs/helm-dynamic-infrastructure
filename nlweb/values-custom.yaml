@@ -5,7 +5,8 @@ neoload:
       mongo:
         host: YOUR_MONGODB_HOST_URL
         port: 27017
-    secretKey: YOUR_SECRET_KEY
+    # The secret key has to be at least 8 characters long
+    secretKey: YOUR_CUSTOM_SECRET_KEY
 
 ### MongoDB user configuration
 mongodb:
@@ -23,7 +24,7 @@ services:
     host: neoload-web-files.mycompany.com
 
 ### Ingress configuration
-### Toggle your preferred ingress controller configuration (nginx|alb)
+### Uncomment your preferred ingress controller configuration (nginx|alb)
 ingress:
   enabled: true
   class: nginx
@@ -34,7 +35,7 @@ ingress:
 #  class: alb
 #  annotations:
   ### TLS configuration
-  ### Toggle if you want to secure your app with https
+  ### Uncomment if you want to secure your app with https
 #  tls:
 #    - secretName: tls-secret
 #      secretCertificate: -|

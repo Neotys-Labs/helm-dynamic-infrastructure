@@ -60,7 +60,7 @@ spec:
             - name: NLPROJECT_MAX_UPLOADED_FILES_PER_WEEK
               value: {{ int .Values.neoload.configuration.backend.misc.files.maxUploadPerWeek | quote }}
             - name: SEND_USAGE_STATISTICS
-              value: {{ .Values.neoload.configuration.backend.misc.sendUsageStatistics | quote }}
+              value: {{ true | quote }}
             - name: NLWEB_SECRET_KEY
               valueFrom:
                 secretKeyRef:

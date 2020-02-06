@@ -5,7 +5,7 @@ neoload:
       mongo:
         host: YOUR_MONGODB_HOST_URL
         port: 27017
-    # The secret key has to be at least 8 characters long
+    # The secret key must be at least 8 characters long
     secretKey: YOUR_CUSTOM_SECRET_KEY
 
 ### MongoDB user configuration

@@ -58,10 +58,10 @@ ingress:
   enabled: true
   class: nginx
   annotations: {}
-  tls:
-    - secretName: 
-      secretCertificate: 
-      secretKey: 
+#  tls:
+#    - secretName: 
+#      secretCertificate: 
+#      secretKey: 
 
 resources:
   backend:

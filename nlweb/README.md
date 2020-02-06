@@ -56,30 +56,30 @@ Parameter | Description | Default
 `imagePullSecrets` | The image pull secrets | `[]`
  |  | 
 `serviceAccount.create` | Specifies whether a service account should be created | `true`
-`serviceAccount.name` | The name of the service account to use | ``
+`serviceAccount.name` | The name of the service account to use | 
  |  | 
 `podSecurityContext`| The pod security context | `{}`
 `securityContext` | The security context | `{}`
  |  | 
-`services.webapp.host` | The hostname for the webapp/front deployment | ``
+`services.webapp.host` | The hostname for the webapp/front deployment | 
 `services.webapp.type` | The service type for the webapp/front deployment | `ClusterIP`
 `services.webapp.port` | The service port for the webapp/front deployment | `80`
 `services.webapp.ingress.paths` | The path mapping for the webapp/front ingress | `[""]`
-`services.api.host` | The hostname for the api deployment | ``
+`services.api.host` | The hostname for the api deployment | 
 `services.api.type` | The service type for the api deployment | `ClusterIP`
 `services.api.port` | The service port for the api deployment | `80`
 `services.api.ingress.paths` | The path mapping for the api ingress | `[""]`
-`services.files.host` | The hostname for the files deployment | ``
+`services.files.host` | The hostname for the files deployment | 
 `services.files.type` | The service type for the files deployment | `ClusterIP`
 `services.files.port` | The service port for the files deployment | `80`
 `services.files.ingress.paths` | The path mapping for the files ingress | `[""]`
  |  | 
 `ingress.enabled` | Enable ingresses | `true`
 `ingress.class` | Specifies which ingress controller class should listen to this ingress | `nginx`
-`ingress.annotations` | Annotations for configuring the ingress | ``
-`ingress.tls[0].secretName` | The name of your TLS secret | ``
+`ingress.annotations` | Annotations for configuring the ingress | 
+`ingress.tls[0].secretName` | The name of your TLS secret | 
 `ingress.tls[0].secretCertificate` | The content of your imported certificate | `{}`
-`ingress.tls[0].secretKey` | The content of your imported private key | ``
+`ingress.tls[0].secretKey` | The content of your imported private key | 
  |  | 
 `resources.backend.requests.cpu` | CPU resource requests for the backend | `500m`
 `resources.backend.requests.memory` | Memory resource requests for the backend | `2Gi`
@@ -90,18 +90,17 @@ Parameter | Description | Default
 `resources.frontend.limits.cpu` | CPU resource requests for the frontend | `2`
 `resources.frontend.limits.memory` | Memory resource requests for the frontend | `2Gi`
  |  | 
-`neoload.configuration.backend.mongo.host` | MongoDB host | ``
+`neoload.configuration.backend.mongo.host` | MongoDB host | 
 `neoload.configuration.backend.mongo.port` | MongoDB port | `27017`
 `neoload.configuration.backend.mongo.poolSize` | MongoDB pool size | `50`
 `neoload.configuration.backend.java.xmx` | Java JVM Max heap size for the backend | `1800m`
 `neoload.configuration.backend.misc.files.maxUploadSizeInBytes` | Max file upload size in bytes | `250000000`
 `neoload.configuration.backend.misc.files.maxUploadPerWeek` | Max file upload count per week | `250`
-`neoload.configuration.backend.misc.sendUsageStatistics` | Max file upload count per week | `250`
 `neoload.configuration.frontend.java.xmx` | Java JVM Max heap size for the frontend | `900m`
  |  | 
 `mongodb.usePassword` | Set to false if your MongoDB connection doesn't require authentication | `true`
-`mongodb.mongodbUsername` | MongoDB Username | ``
-`mongodb.mongodbPassword` | MongoDB Password | ``
+`mongodb.mongodbUsername` | MongoDB Username | 
+`mongodb.mongodbPassword` | MongoDB Password | 
  |  | 
 `nodeSelector` | Node Selector | `{}`
 `tolerations` | Pod's tolerations | `[]`
@@ -143,6 +142,6 @@ Copy the content of the files into the `ingress.tls[0].secretCertificate` and `i
 
 Set a name for your new tls secret name into the `ingress.tls[0].secretName` parameter.
 
-## Neoload Web components overview
+[//]: # ## Neoload Web components overview
 
-This section is designed to help you gain a better understanding of the many components at work in Neoload Web.
+[//]: # This section is designed to help you gain a better understanding of the many components at work in Neoload Web.

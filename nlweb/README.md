@@ -141,7 +141,3 @@ Copy the content of the files into the `ingress.tls[0].secretCertificate` and `i
 #### Specify your new tls secret name
 
 Set a name for your new tls secret name into the `ingress.tls[0].secretName` parameter.
-
-[//]: # ## Neoload Web components overview
-
-[//]: # This section is designed to help you gain a better understanding of the many components at work in Neoload Web.

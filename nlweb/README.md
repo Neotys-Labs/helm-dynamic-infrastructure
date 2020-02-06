@@ -30,7 +30,7 @@ You can find detailed documentation for ingresses annotations and parameters her
 
 ## Installation
 
-1. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+1. Download and set up your **[values-custom.yaml](/nlweb/values-custom.yaml)** file
 2. Install with the following command
 
 ```bash		
@@ -106,7 +106,7 @@ Parameter | Description | Default
 `nodeSelector` | Node Selector | `{}`
 `tolerations` | Pod's tolerations | `[]`
 
-We suggest you maintain your own *values-custom.yaml* and add to it the relevant parameters, but you can also specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
+We suggest you maintain your own *values-custom.yaml* and update it with your relevant parameters, but you can also specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```bash
 $ helm install my-release \

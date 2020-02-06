@@ -57,10 +57,7 @@ services:
 ingress:
   enabled: true
   class: nginx
-  annotations:
-      nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
-      nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations: {}
   tls:
     - secretName: 
       secretCertificate: 

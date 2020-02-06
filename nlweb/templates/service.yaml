@@ -19,5 +19,8 @@ spec:
       name: http
   selector:
     {{- include "nlweb.selectorLabels" $ | nindent 4 }}
+
+---
+
 {{- end -}}
 {{- end -}}

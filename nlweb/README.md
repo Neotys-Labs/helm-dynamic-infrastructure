@@ -19,13 +19,18 @@ This chart is meant for advanced kubernetes/helm users as a successful installat
 
 There are many different ingress controller providers.
 
-This chart is shipped with sensible values for both [**nginx**](https://hub.helm.sh/charts/bitnami/nginx) and [**alb**](https://hub.helm.sh/charts/incubator/aws-alb-ingress-controller).
+This chart has been tested and is shipped with default values for both [**nginx**](https://hub.helm.sh/charts/bitnami/nginx) and [**alb**](https://hub.helm.sh/charts/incubator/aws-alb-ingress-controller).
 
-> **Caution**: Selecting any other ingress controllers will require additional chart tuning from your part.
+You can find detailed documentation for ingresses annotations and parameters here :
+
+- [nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/)
+- [alb](https://kubernetes-sigs.github.io/aws-alb-ingress-controller/guide/ingress/annotation/)
+
+> **Caution**: Selecting any other ingress controllers may require additional chart tuning from your part.
 
 ## Installation
 
-1. Download and set up your **[values-custom.yaml]()** file
+1. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
 2. Install with the following command
 
 ```bash		

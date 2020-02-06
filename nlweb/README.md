@@ -12,7 +12,7 @@ This chart is meant for advanced kubernetes/helm users as a successful installat
 
 - A running [Kubernetes](https://kubernetes.io/) cluster (1.14+)
 - [Helm](https://helm.sh/docs/intro/install/) CLI  (~3.0.2)
-- A running [mongodb](https://www.mongodb.com/) accessible from the kubernetes cluster
+- A running [mongodb](https://www.mongodb.com/) accessible from the kubernetes cluster ([see supported versions](https://www.neotys.com/documents/doc/nlweb/latest/en/html/#26054.htm#o39020))
 - One of the following ingress controller installed on your kubernetes cluster
 
 #### Ingress controller

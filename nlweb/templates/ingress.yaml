@@ -15,7 +15,7 @@ metadata:
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
     {{- range $label, $annotation := .Values.ingress.annotations }}
     {{- if hasPrefix $.Values.ingress.class $label }}
-    {{ $label }}: {{ $annotation }}
+    {{ $label }}: {{ $annotation | quote }}
     {{- end }}
     {{- end }}
 spec:

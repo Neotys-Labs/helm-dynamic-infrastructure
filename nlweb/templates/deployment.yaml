@@ -63,10 +63,12 @@ spec:
               value: {{ true | quote }}
             - name: DEPLOYMENT_TYPE
               value: "helm/kubernetes"
+            {{- if .Values.neoload.configuration.misc -}}
             {{- if .Values.neoload.configuration.misc.trackingUrl }}
             - name: NEOTYS_TRACKING_URL
               value: {{ .Values.neoload.configuration.misc.trackingUrl | quote }}
-            {{- end }}                
+            {{- end -}}
+            {{- end }}
             - name: NLWEB_SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -106,10 +108,12 @@ spec:
               value: {{ .Values.neoload.configuration.frontend.java.xmx }}
             - name: DEPLOYMENT_TYPE
               value: "helm/kubernetes"
+            {{- if .Values.neoload.configuration.misc -}}
             {{- if .Values.neoload.configuration.misc.trackingUrl }}
             - name: NEOTYS_TRACKING_URL
               value: {{ .Values.neoload.configuration.misc.trackingUrl | quote }}
-            {{- end }}            
+            {{- end -}}
+            {{- end }}         
           ports:
             - name: webapp
               containerPort: 9090

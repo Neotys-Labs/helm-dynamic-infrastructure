@@ -61,6 +61,12 @@ spec:
               value: {{ int .Values.neoload.configuration.backend.misc.files.maxUploadPerWeek | quote }}
             - name: SEND_USAGE_STATISTICS
               value: {{ true | quote }}
+            - name: DEPLOYMENT_TYPE
+              value: "helm/kubernetes"
+            {{- if .Values.neoload.configuration.misc.trackingUrl }}
+            - name: NEOTYS_TRACKING_URL
+              value: {{ .Values.neoload.configuration.misc.trackingUrl | quote }}
+            {{- end }}                
             - name: NLWEB_SECRET_KEY
               valueFrom:
                 secretKeyRef:
@@ -96,8 +102,14 @@ spec:
           image: "{{ .Values.image.frontend.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.frontend.pullPolicy }}
           env:
-          - name: MEMORY_MAX
-            value: {{ .Values.neoload.configuration.frontend.java.xmx }}
+            - name: MEMORY_MAX
+              value: {{ .Values.neoload.configuration.frontend.java.xmx }}
+            - name: DEPLOYMENT_TYPE
+              value: "helm/kubernetes"
+            {{- if .Values.neoload.configuration.misc.trackingUrl }}
+            - name: NEOTYS_TRACKING_URL
+              value: {{ .Values.neoload.configuration.misc.trackingUrl | quote }}
+            {{- end }}            
           ports:
             - name: webapp
               containerPort: 9090

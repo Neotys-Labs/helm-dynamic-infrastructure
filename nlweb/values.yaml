@@ -93,7 +93,6 @@ neoload:
         files:
           maxUploadSizeInBytes: "250000000"
           maxUploadPerWeek: "250"
-        sendUsageStatistics: true
     frontend:
       java:
         xmx: 900m

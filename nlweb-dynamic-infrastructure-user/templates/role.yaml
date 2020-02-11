@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.name }}
 rules:
 - apiGroups: [ "", "apps", "extensions" ]
-  resources: ["deployments, replicasets"]
+  resources: ["deployments", "replicasets"]
   verbs: ["*"]
 - apiGroups: [ "" ]
   resources: ["replicationcontrollers"]

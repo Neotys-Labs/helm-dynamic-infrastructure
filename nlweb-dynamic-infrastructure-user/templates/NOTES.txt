@@ -2,7 +2,13 @@
 kubectl cluster-info | grep 'Kubernetes master'
 
 2. Kubernetes namespace is:
-{{ .Values.name }}
+{{ .Release.Name }}
 
 3. Get the API token to use by running this command:
-kubectl get secret $(kubectl get serviceaccounts {{ .Values.name }}-sa -o jsonpath='{.secrets[].name}' -n {{ .Values.name }}) -o jsonpath='{.data.token}' -n {{ .Values.name }} | base64 --decode
+kubectl get secret $(kubectl get serviceaccounts {{ .Release.Name }}-sa -o jsonpath='{.secrets[].name}' -n {{ .Release.Name }}) -o jsonpath='{.data.token}' -n {{ .Release.Name }} | base64 --decode
+
+
+{{- if .Values.registryKey.enabled -}}
+If you defined a registry key to pull images:
+kubectl patch sa default -p '{"imagePullSecrets": [{"name": "{{ .Release.Name }}-rk"}]}' -n {{ .Release.Name }}
+{{- end }}

@@ -1,1 +1,5 @@
-name: nlweb-custom
+registryKey:
+  enabled: false
+  registry: https://registry.hub.docker.com
+  username: userName
+  password: password

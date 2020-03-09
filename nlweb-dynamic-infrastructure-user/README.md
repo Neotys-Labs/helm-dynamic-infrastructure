@@ -1,9 +1,10 @@
+
 # Neoload Web dynamic infrastructure user
 
 # Introduction
 
 This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a kubernetes cluster.
-
+Details chapter explain what this chart create in the Kubernetes cluster.
 
 ## Prerequisites
 
@@ -37,4 +38,21 @@ Parameter | Description | Default
 `registryKey.registry` | Docker registry URL |
 `registryKey.username` | User name of docker registry |
 `registryKey.password` | Password name of docker registry |
+
+## Details
+
+This chart create:
+ 1. A namespace call `my-release`
+ 1. A role with these rules:
+	``` yaml
+	rules:
+	- apiGroups: [ "", "apps", "extensions" ]
+	  resources: ["deployments", "replicasets"]
+	  verbs: ["*"]
+	- apiGroups: [ "" ]
+	  resources: ["replicationcontrollers"]
+	  verbs: ["*"]
+	```
+ 1. A role binding
+ 1. A service account
 

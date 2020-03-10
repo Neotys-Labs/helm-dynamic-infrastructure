@@ -1,5 +1,5 @@
 
-# Neoload Web dynamic infrastructure user
+# Neoload Web dynamic infrastructure user access
 
 # Introduction
 
@@ -41,9 +41,9 @@ Parameter | Description | Default
 
 ## Details
 
-This chart create:
- 1. A namespace call `my-release`
- 1. A role with these rules:
+This chart creates:
+ 1. A namespace called `my-release`
+ 1. A role with the following rules:
 	``` yaml
 	rules:
 	- apiGroups: [ "", "apps", "extensions" ]

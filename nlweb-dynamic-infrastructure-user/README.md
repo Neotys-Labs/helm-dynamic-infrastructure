@@ -18,7 +18,7 @@ Details chapter explain what this chart create in the Kubernetes cluster.
 2. Install with the following command
 
 ```bash		
-helm repo add https://sylvain-brun-neotys.github.io/helm 
+helm repo add neotys-chart https://sylvain-brun-neotys.github.io/helm 
 helm install my-release neotys-chart/nlweb-dynamic-infrastructure-user
 ```
 

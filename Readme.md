@@ -4,7 +4,7 @@
 # Introduction
 
 This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a kubernetes cluster.
-Details chapter explain what this chart create in the Kubernetes cluster.
+In the (details chapter)[#details] you can have an overview of every objects created in the Kubernetes cluster.
 
 ## Prerequisites
 
@@ -14,12 +14,16 @@ Details chapter explain what this chart create in the Kubernetes cluster.
 
 ## Installation
 
-1. Download and set up your **[values-custom.yaml](/nlweb/values-custom.yaml)** file
+1. Add the Neotys chart repository
+
+```bash		
+helm repo add neotys https://helm.neotys.com/stable
+```
+
 2. Install with the following command
 
 ```bash		
-helm repo add neotys-chart https://sylvain-brun-neotys.github.io/helm 
-helm install my-release neotys-chart/nlweb-dynamic-infrastructure-user
+helm install my-release neotys/nlweb-dynamic-infrastructure
 ```
 
 ## Uninstalling the Chart

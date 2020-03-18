@@ -3,8 +3,8 @@
 
 # Introduction
 
-This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a kubernetes cluster.
-In the [details chapter](#details) you can have an overview of every objects created in the Kubernetes cluster.
+This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a Kubernetes cluster.
+In the [details chapter](#details) you can have an overview of every objects created in the cluster.
 
 ## Prerequisites
 

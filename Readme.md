@@ -17,7 +17,7 @@ In the [details chapter](#details) you can have an overview of every objects cre
 1. Add the Neotys chart repository
 
 ```bash		
-helm repo add neotys https://helm.neotys.com/stable
+helm repo add neotys https://helm.prod.neotys.com/stable
 ```
 
 2. Install with the following command

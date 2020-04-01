@@ -23,7 +23,7 @@ helm repo add neotys https://helm.prod.neotys.com/stable/
 2. Install with the following command
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure
+helm install my-release neotys/nlweb-dynamic-infrastructure-user
 ```
 
 ## Uninstalling the Chart

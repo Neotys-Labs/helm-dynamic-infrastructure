@@ -52,10 +52,13 @@ This chart creates:
 	rules:
 	- apiGroups: [ "", "apps", "extensions" ]
 	  resources: ["deployments", "replicasets"]
-	  verbs: ["*"]
+	  verbs: ["get", "list", "create", "update", "patch", "delete"]
+	- apiGroups: [ "", "apps", "extensions" ]
+	  resources: ["pods", "events"]
+	  verbs: ["get", "list"]	  
 	- apiGroups: [ "" ]
 	  resources: ["replicationcontrollers"]
-	  verbs: ["*"]
+	  verbs: ["get", "list", "create", "update", "patch", "delete"]
 	```
  1. A role binding
  1. A service account

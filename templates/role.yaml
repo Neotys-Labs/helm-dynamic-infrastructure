@@ -4,10 +4,10 @@ metadata:
   name: {{ .Release.Name }}-role
   namespace: {{ .Release.Name }}
 rules:
-- apiGroups: [ "", "apps", "extensions" ]
+- apiGroups: [ "apps", "extensions" ]
   resources: ["deployments", "replicasets"]
   verbs: ["get", "list", "create", "update", "patch", "delete"]
-- apiGroups: [ "", "apps", "extensions" ]
+- apiGroups: [ "" ]
   resources: ["pods", "events"]
   verbs: ["get", "list"]
 - apiGroups: [ "" ]

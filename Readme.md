@@ -14,16 +14,20 @@ In the [details chapter](#details) you can have an overview of every objects cre
 
 ## Installation
 
-1. Add the Neotys chart repository
+1. Add the Neotys chart repository or update it if you already had it registered
 
 ```bash		
 helm repo add neotys https://helm.prod.neotys.com/stable/
 ```
 
+```bash		
+helm repo update
+```
+
 2. Install with the following command
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure-user -n my-namespace --create-namespace
+helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace --create-namespace
 ```
 
 ## Uninstalling the Chart

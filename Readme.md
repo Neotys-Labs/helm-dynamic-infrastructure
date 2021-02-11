@@ -64,6 +64,6 @@ This chart creates:
 	  resources: ["replicationcontrollers"]
 	  verbs: ["get", "list", "create", "update", "patch", "delete"]
 	```
- 1. A role binding called `myrelease-rolebinding`
- 1. A service account called `myrelease-sa`
+ 1. A role binding called `my-release-rolebinding`
+ 1. A service account called `my-release-sa`
 

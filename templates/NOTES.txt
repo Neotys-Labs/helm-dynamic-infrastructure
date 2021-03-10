@@ -1,5 +1,5 @@
-1. Get the Kubernetes master URL by running this command:
-kubectl cluster-info | grep 'Kubernetes master'
+1. Get the Kubernetes control plane URL by running this command:
+kubectl cluster-info | grep 'Kubernetes control plane'
 
 2. Kubernetes namespace is:
 {{ .Release.Namespace }}

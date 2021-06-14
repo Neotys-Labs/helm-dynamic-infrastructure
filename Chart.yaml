@@ -1,6 +1,7 @@
 apiVersion: v2
 name: nlweb-dynamic-infrastructure
 description: A Helm chart for deploying NeoLoad dynamic infrastructure on Kubernetes
+icon: https://www.neotys.com/favicon-32x32.png
 
 # A chart can be either an 'application' or a 'library' chart.
 #

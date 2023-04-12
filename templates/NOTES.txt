@@ -5,7 +5,7 @@ kubectl cluster-info | grep -e 'Kubernetes control plane' -e 'Kubernetes master'
 {{ .Release.Namespace }}
 
 3. Get the API token to use by running this command:
-kubectl get secret $(kubectl get sa {{ .Release.Name }}-sa -o jsonpath='{.secrets[].name}' -n {{ .Release.Namespace }}) -o jsonpath='{.data.token}' -n {{ .Release.Namespace }} | base64 --decode
+kubectl get secret {{ .Release.Name }}-secret -o jsonpath='{.data.token}' -n {{ .Release.Namespace }} | base64 --decode
 
 {{ if .Values.registryKey.enabled -}}
 4. To set the image pull secret:

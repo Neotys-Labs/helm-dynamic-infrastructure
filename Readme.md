@@ -8,7 +8,7 @@ In the [details chapter](#details) you can have an overview of every objects cre
 
 ## Prerequisites
 
-- A running [Kubernetes](https://kubernetes.io/) cluster (1.9.0 - 1.21.0)
+- A running [Kubernetes](https://kubernetes.io/) cluster (1.9.0 - 1.27.0)
 - [Helm](https://helm.sh/docs/intro/install/) CLI  (3.2+)
 
 
@@ -24,13 +24,32 @@ helm repo add neotys https://helm.prod.neotys.com/stable/
 helm repo update
 ```
 
-2. Install with the following command
+2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+
+```bash
+wget https://raw.githubusercontent.com/Neotys-Labs/helm-dynamic-infrastructure/master/values-custom.yaml
+``` 
+> You can refer to the ['Configuration'](#Configuration) section for basic configuration options.
+>
+> You can skip this step if you have nothing to change in the configuration.
+
+3. Create a dedicated namespace
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace --create-namespace
+kubectl create namespace my-namespace
 ```
 
-## Uninstalling the Chart
+4. Install with the following command
+
+```bash		
+helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace -f ./values-custom.yaml
+```
+
+> Since Helm 3.2+ you can skip step 3, and add the --create-namespace option to this command
+> 
+> If you do not uses custom values you can remove "-f ./values-custom.yaml" from the command.
+
+## Uninstall
 
 To uninstall the `my-release` deployment:
 

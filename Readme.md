@@ -8,7 +8,7 @@ In the [details chapter](#details) you can have an overview of every objects cre
 
 ## Prerequisites
 
-- A running [Kubernetes](https://kubernetes.io/) cluster (1.9.0 - 1.27.0)
+- A running [Kubernetes](https://kubernetes.io/) cluster (1.9.0 - 1.30.0)
 - [Helm](https://helm.sh/docs/intro/install/) CLI  (3.2+)
 
 

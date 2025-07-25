@@ -111,10 +111,11 @@ kubectl create secret docker-registry my-registry-secret \
   --docker-username=USERNAME \
   --docker-password=PASSWORD \
   --namespace=my-namespace
+```
 
  2. Referencing it in your `values-custom.yaml`:
 
-# values-custom.yaml.yaml
-
+``` yaml
 imagePullSecrets:
   - name: my-registry-secret
+```

@@ -71,7 +71,7 @@ $ helm uninstall my-release -n my-namespace
 Parameter | Description | Default
 --------- | ----------- | -------
 `registryKey.enabled` | *(Deprecated)* Enable registry key to pull docker images | `false`
-`registryKey.registry` | *(Deprecated)* Docker registry URL | `""`
+`registryKey.registry` | *(Deprecated)* Docker registry URL | `https://registry.hub.docker.com`
 `registryKey.username` | *(Deprecated)* Username for Docker registry | `""`
 `registryKey.password` | *(Deprecated)* Password for Docker registry | `""`
 `imagePullSecrets` | A list of existing Kubernetes secrets used to pull private images | `[]`

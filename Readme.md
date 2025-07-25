@@ -6,7 +6,7 @@ This chart deploys the credentials required for NeoLoad Web Dynamic Infrastructu
 In the [Details](#details) section you can find an overview of all objects created in the cluster.  
 
 > **Security note:** This chart supports using Kubernetes `imagePullSecrets` for secure access to private registries.  
-> The previous method of passing credentials via the `registryKey` field in `values.yaml` is still supported but **deprecated**.
+> The previous method of passing credentials via the `registryKey` field in `values-custom.yaml` is still supported but **deprecated**.
 
 ## Prerequisites
 

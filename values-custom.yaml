@@ -1,0 +1,14 @@
+# values-custom.yaml
+# Custom override values for Helm chart
+
+
+# Example: imagePullSecrets for private registry access
+# imagePullSecrets:
+#   - name: my-registry-secret
+
+# Example: legacy registryKey (deprecated in favor of imagePullSecrets)
+# registryKey:
+#   enabled: true
+#   registry: https://registry.hub.docker.com
+#   username: your-username
+#   password: your-password

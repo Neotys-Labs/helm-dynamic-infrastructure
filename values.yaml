@@ -12,5 +12,7 @@ serviceAccount:
 registryKey:
   enabled: false
   registry: https://registry.hub.docker.com
-  username: userName
-  password: password
+  username: ""
+  password: ""
+
+imagePullSecrets: []   # list of existing Secret names

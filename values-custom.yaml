@@ -1,7 +1,6 @@
 # values-custom.yaml
 # Custom override values for Helm chart
 
-
 # Example: imagePullSecrets for private registry access
 # imagePullSecrets:
 #   - name: my-registry-secret

@@ -14,3 +14,35 @@ registryKey:
   registry: https://registry.hub.docker.com
   username: userName
   password: password
+
+image:
+  agent:
+    repository: neotys/neoload-web-dynamic-infrastructure-agent
+    pullPolicy: IfNotPresent
+
+resources:
+  agent:
+    limits:
+      memory: 500Mi
+      cpu: 200m
+    requests:
+      memory: 400Mi
+      cpu: 100m
+
+neoload:
+  labels:
+    agent: {}
+  annotations:
+    agent: {}
+
+#podSecurityContext:
+#  fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  # readOnlyRootFilesystem: true
+  # runAsUser: 2000

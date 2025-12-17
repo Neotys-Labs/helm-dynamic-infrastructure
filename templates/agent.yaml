@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-agent
+  labels:
+    {{- include "nlweb-dynamic-infrastructure-user.labels" . | nindent 4 }}
+    {{- range $key, $value := .Values.neoload.labels.agent }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  annotations:
+    {{- range $key, $value := .Values.neoload.annotations.agent }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "nlweb-dynamic-infrastructure-user.agent.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "nlweb-dynamic-infrastructure-user.agent.selectorLabels" . | nindent 8 }}
+        {{- range $key, $value := .Values.neoload.labels.agent }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      annotations:
+        {{- range $key, $value := .Values.neoload.annotations.agent }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ .Release.Name }}-sa
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-agent
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.agent.repository }}:{{ default .Chart.AppVersion .Values.image.agent.tag }}"
+          imagePullPolicy: {{ .Values.image.agent.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources.agent | nindent 12 }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-agent-config
+            - secretRef:
+                name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-nlweb-secrets

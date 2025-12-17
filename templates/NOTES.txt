@@ -1,13 +1,4 @@
-1. Get the Kubernetes control plane URL by running this command:
-kubectl cluster-info | grep -e 'Kubernetes control plane' -e 'Kubernetes master'
-
-2. Kubernetes namespace is:
-{{ .Release.Namespace }}
-
-3. Get the API token to use by running this command:
-kubectl get secret {{ .Release.Name }}-secret -o jsonpath='{.data.token}' -n {{ .Release.Namespace }} | base64 --decode
-
 {{ if .Values.registryKey.enabled -}}
-4. To set the image pull secret:
+- Set the image pull secret by running this command:
 kubectl patch sa {{ .Release.Name }}-sa -p '{"imagePullSecrets": [{"name": "{{ .Release.Name }}-rk"}]}' -n {{ .Release.Namespace }}
 {{- end }}

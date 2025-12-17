@@ -1,0 +1,5 @@
+agent:
+  # name: ""
+  neoloadWebApiUrl: "https://neoload-api.saas.neotys.com"
+  neoloadWebApiToken: "YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN"
+  isOpenShiftCluster: false

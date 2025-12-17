@@ -1,10 +1,18 @@
 
 # Neoload Web dynamic infrastructure user access
 
-# Introduction
+## Introduction
 
-This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a Kubernetes cluster.
-In the [details chapter](#details) you can have an overview of every objects created in the cluster.
+This Helm chart enables performance engineers to automatically deploy load testing infrastructure on a Kubernetes cluster through NeoLoad Web.
+It provisions the required user credentials and deploys an agent that connects your cluster to NeoLoad Web's Dynamic Infrastructure feature.
+
+For a complete overview of all resources created in your cluster, see the [Details](#details) section.
+
+> [!IMPORTANT]
+> Two versions of this chart are available:
+>
+> - **v1.x (Latest)** — Deploys an agent that communicates with NeoLoad Web. This version is more secure as it uses outbound-only connections. **Recommended for environments with strict security requirements.**
+> - **v0.x** — Requires direct inbound API access to the cluster from NeoLoad Web. A simpler setup that works well when inbound access is acceptable. To migrate from v0.x to v1.x, see the [Migration guide](doc/MIGRATION_GUIDE_V0_TO_V1.md). To install v0.x, see the [v0.x Readme](https://github.com/Neotys-Labs/helm-dynamic-infrastructure/blob/stable/v0_x/Readme.md).
 
 ## Prerequisites
 
@@ -14,7 +22,7 @@ In the [details chapter](#details) you can have an overview of every objects cre
 
 ## Installation
 
-1. Add the Neotys chart repository or update it if you already had it registered
+#### 1. Add the Neotys chart repository or update it if you already had it registered
 
 ```bash		
 helm repo add neotys https://helm.prod.neotys.com/stable/
@@ -24,30 +32,18 @@ helm repo add neotys https://helm.prod.neotys.com/stable/
 helm repo update
 ```
 
-2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+#### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
 
 ```bash
 wget https://raw.githubusercontent.com/Neotys-Labs/helm-dynamic-infrastructure/master/values-custom.yaml
 ``` 
-> You can refer to the ['Configuration'](#Configuration) section for basic configuration options.
->
-> You can skip this step if you have nothing to change in the configuration.
+Refer to the [Configuration](#Configuration) section for configuration options.
 
-3. Create a dedicated namespace
+#### 3. Install
 
 ```bash		
-kubectl create namespace my-namespace
+helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml
 ```
-
-4. Install with the following command
-
-```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace -f ./values-custom.yaml
-```
-
-> Since Helm 3.2+ you can skip step 3, and add the --create-namespace option to this command
-> 
-> If you do not uses custom values you can remove "-f ./values-custom.yaml" from the command.
 
 ## Uninstall
 
@@ -59,30 +55,50 @@ $ helm uninstall my-release -n my-namespace
 
 ## Configuration
 
-Parameter | Description | Default
------ | ----------- | -------
-`registryKey.enabled` | Enable registry key to pull docker images | `false`
-`registryKey.registry` | Docker registry URL |
-`registryKey.username` | User name of docker registry |
-`registryKey.password` | Password name of docker registry |
+Update `values-custom.yaml` file according to your needs.
+
+### Agent configuration
+
+| Parameter                  | Description                                                                                                                                                                                                                                      | Default                                                     | Required |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|:--------:|
+| `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
+| `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4)                                                                                                                                                                                                  |                                                             |    ✅     |
+| `agent.neoloadWebApiToken` | NeoLoad Web long-term token                                                                                                                                                                                                                      |                                                             |    ✅     |
+| `agent.isOpenShiftCluster` | Set to `true` if current cluster is Openshift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
+| `agent.uuid`               | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)       |          |
+
+### Docker registry (optional)
+
+Configure a private docker registry to pull the docker images of the Controller and Load generator.\
+The Docker image names and pull secret are defined in NeoLoad Web's infrastructure provider.
+
+| Parameter              | Description                               | Default |
+|------------------------|-------------------------------------------|---------|
+| `registryKey.enabled`  | Enable registry key to pull docker images | `false` |
+| `registryKey.registry` | Docker registry URL                       |         |
+| `registryKey.username` | User name of docker registry              |         |
+| `registryKey.password` | Password name of docker registry          |         |
 
 ## Details
 
 This chart creates:
  1. A namespace called `my-namespace`
- 1. A role called `my-release-role` with the following rules:
-	``` yaml
-	rules:
-	- apiGroups: [ "apps", "extensions" ]
-	  resources: ["deployments", "replicasets"]
-	  verbs: ["get", "list", "create", "update", "patch", "delete"]
-	- apiGroups: [ "" ]
-	  resources: ["pods", "events"]
-	  verbs: ["get", "list"]
-	- apiGroups: [ "" ]
-	  resources: ["replicationcontrollers"]
-	  verbs: ["get", "list", "create", "update", "patch", "delete"]
-	```
- 1. A role binding called `my-release-rolebinding`
- 1. A service account called `my-release-sa`
+ 2. A role called `my-release-role` with the following rules:
+    ``` yaml
+    rules:
+    - apiGroups: [ "apps", "extensions" ]
+      resources: ["deployments", "replicasets"]
+      verbs: ["get", "list", "create", "update", "patch", "delete"]
+    - apiGroups: [ "" ]
+      resources: ["pods", "events"]
+      verbs: ["get", "list"]
+    - apiGroups: [ "" ]
+      resources: ["replicationcontrollers"]
+      verbs: ["get", "list", "create", "update", "patch", "delete"]
+    ```
+ 3. A role binding called `my-release-rolebinding`
+ 4. A service account called `my-release-sa`
+ 5. A config map for agent environment variables called `my-release-nlweb-dynamic-infrastructure-agent-config`
+ 6. A secret to store NeoLoad Web long-term token `my-release-nlweb-dynamic-infrastructure-nlweb-secrets`
+ 7. A deployment for the agent pod called `my-release-nlweb-dynamic-infrastructure-agent`
 

@@ -46,3 +46,6 @@ securityContext:
   runAsNonRoot: true
   # readOnlyRootFilesystem: true
   # runAsUser: 2000
+
+proxy:
+  enabled: false

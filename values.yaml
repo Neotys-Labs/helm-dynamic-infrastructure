@@ -24,9 +24,8 @@ resources:
   agent:
     limits:
       memory: 500Mi
-      cpu: 200m
     requests:
-      memory: 400Mi
+      memory: 500Mi
       cpu: 100m
 
 neoload:

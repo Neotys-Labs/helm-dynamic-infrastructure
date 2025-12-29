@@ -1,5 +1,5 @@
 
-# Neoload Web dynamic infrastructure user access
+# Neoload Web dynamic infrastructure agent
 
 ## Introduction
 
@@ -61,9 +61,9 @@ Update `values-custom.yaml` file according to your needs.
 
 | Parameter                  | Description                                                                                                                                                                                                                                      | Default                                                     | Required |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|:--------:|
-| `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
 | `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4)                                                                                                                                                                                                  |                                                             |    ✅     |
 | `agent.neoloadWebApiToken` | NeoLoad Web long-term token                                                                                                                                                                                                                      |                                                             |    ✅     |
+| `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
 | `agent.isOpenShiftCluster` | Set to `true` if current cluster is Openshift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
 | `agent.uuid`               | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)       |          |
 

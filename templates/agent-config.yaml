@@ -5,19 +5,12 @@ kind: ConfigMap
 metadata:
   name: {{ $metadataName }}
 
-{{- $previous := lookup "v1" "ConfigMap" .Release.Namespace $metadataName }}
+{{- $previousAgentConfigDeployment := lookup "v1" "ConfigMap" .Release.Namespace $metadataName }}
 data:
   KUBERNETES_NAMESPACE:  {{ .Release.Namespace | quote }}
   RELEASE_NAME: {{ .Release.Name | quote }}
   NLW_API_URL: {{ .Values.agent.neoloadWebApiUrl | quote }}
-
-  {{- if hasKey .Values.agent "uuid" }}
-  AGENT_UUID: {{ .Values.agent.uuid | quote }}
-  {{- else if (($previous).data).AGENT_UUID }}
-  AGENT_UUID: {{ $previous.data.AGENT_UUID | quote }}
-  {{- else }}
-  AGENT_UUID: {{ randAlphaNum 32 | nospace | quote }}
-  {{- end }}
+  AGENT_UUID: {{ coalesce .Values.agent.uuid $previousAgentConfigDeployment.data.AGENT_UUID (randAlphaNum 32 | nospace) | quote }}
 
   {{- if hasKey .Values.agent "name" }}
   AGENT_NAME: {{ .Values.agent.name | quote }}
@@ -31,7 +24,7 @@ data:
 {{/*
 Prevent upgrade from old V0.x Chart to Agent-based Chart
 */}}
-{{- if and (not $previous) (gt .Release.Revision 1) }}
+{{- if and (not $previousAgentConfigDeployment) (gt .Release.Revision 1) }}
 {{- $error := printf "ERROR Cannot upgrade.\n You are attempting to upgrade NeoLoad Helm release from chart version 0.x to 1.x.\n Please install V1.x in a new deployment.\n For detailed migration instructions, please refer to the documentation: https://github.com/Neotys-Labs/helm-dynamic-infrastructure" -}}
 {{ required $error "" }}
 {{- end }}

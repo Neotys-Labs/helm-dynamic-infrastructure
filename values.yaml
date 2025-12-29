@@ -30,9 +30,9 @@ resources:
 
 neoload:
   labels:
-    agent: {}
+    agent:
   annotations:
-    agent: {}
+    agent:
 
 #podSecurityContext:
 #  fsGroup: 2000

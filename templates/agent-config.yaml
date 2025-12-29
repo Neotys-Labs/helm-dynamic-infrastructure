@@ -12,12 +12,12 @@ data:
   NLW_API_URL: {{ .Values.agent.neoloadWebApiUrl | quote }}
   AGENT_UUID: {{ coalesce .Values.agent.uuid $previousAgentConfigDeployment.data.AGENT_UUID (randAlphaNum 32 | nospace) | quote }}
 
-  {{- if hasKey .Values.agent "name" }}
-  AGENT_NAME: {{ .Values.agent.name | quote }}
+  {{- with .Values.agent.name }}
+  AGENT_NAME: {{ . | quote }}
   {{- end }}
 
-  {{- if hasKey .Values.agent "isOpenShiftCluster" }}
-  IS_OPENSHIFT_CLUSTER: {{ .Values.agent.isOpenShiftCluster | quote }}
+  {{- with .Values.agent.isOpenShiftCluster }}
+  IS_OPENSHIFT_CLUSTER: {{ . | quote }}
   {{- end }}
 
 

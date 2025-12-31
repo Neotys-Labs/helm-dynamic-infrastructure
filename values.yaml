@@ -34,14 +34,9 @@ neoload:
   annotations:
     agent:
 
-#podSecurityContext:
-#  fsGroup: 2000
-
 securityContext:
   capabilities:
     drop:
       - ALL
   allowPrivilegeEscalation: false
   runAsNonRoot: true
-  # readOnlyRootFilesystem: true
-  # runAsUser: 2000

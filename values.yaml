@@ -24,19 +24,15 @@ resources:
   agent:
     limits:
       memory: 500Mi
-      cpu: 200m
     requests:
-      memory: 400Mi
+      memory: 500Mi
       cpu: 100m
 
 neoload:
   labels:
-    agent: {}
+    agent:
   annotations:
-    agent: {}
-
-#podSecurityContext:
-#  fsGroup: 2000
+    agent:
 
 securityContext:
   capabilities:
@@ -44,8 +40,6 @@ securityContext:
       - ALL
   allowPrivilegeEscalation: false
   runAsNonRoot: true
-  # readOnlyRootFilesystem: true
-  # runAsUser: 2000
 
 proxy:
   enabled: false

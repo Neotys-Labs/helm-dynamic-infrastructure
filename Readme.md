@@ -1,5 +1,5 @@
 
-# Neoload Web dynamic infrastructure user access
+# Neoload Web dynamic infrastructure agent
 
 ## Introduction
 
@@ -42,7 +42,7 @@ Refer to the [Configuration](#Configuration) section for configuration options.
 #### 3. Install
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml
+helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN
 ```
 
 ## Uninstall
@@ -61,9 +61,9 @@ Update `values-custom.yaml` file according to your needs.
 
 | Parameter                  | Description                                                                                                                                                                                                                                      | Default                                                     | Required |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|:--------:|
-| `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
 | `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4)                                                                                                                                                                                                  |                                                             |    ✅     |
-| `agent.neoloadWebApiToken` | NeoLoad Web long-term token                                                                                                                                                                                                                      |                                                             |    ✅     |
+| `agent.neoloadWebApiToken` | NeoLoad Web long-term token.<br/>Recommended to set this sensitive information with commandline `--set agent.neoloadWebApiToken=TOKEN`                                                                                                           |                                                             |    ✅     |
+| `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
 | `agent.isOpenShiftCluster` | Set to `true` if current cluster is Openshift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
 | `agent.uuid`               | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)       |          |
 
@@ -72,12 +72,12 @@ Update `values-custom.yaml` file according to your needs.
 Configure a private docker registry to pull the docker images of the Controller and Load generator.\
 The Docker image names and pull secret are defined in NeoLoad Web's infrastructure provider.
 
-| Parameter              | Description                               | Default |
-|------------------------|-------------------------------------------|---------|
-| `registryKey.enabled`  | Enable registry key to pull docker images | `false` |
-| `registryKey.registry` | Docker registry URL                       |         |
-| `registryKey.username` | User name of docker registry              |         |
-| `registryKey.password` | Password name of docker registry          |         |
+| Parameter              | Description                                                                                                                          | Default |
+|------------------------|--------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `registryKey.enabled`  | Enable registry key to pull docker images                                                                                            | `false` |
+| `registryKey.registry` | Docker registry URL                                                                                                                  |         |
+| `registryKey.username` | User name of docker registry                                                                                                         |         |
+| `registryKey.password` | Password name of docker registry<br/>Recommended to set this sensitive information with commandline `--set registryKey.password=PWD` |         |
 
 ### Proxy configuration (optional)
 

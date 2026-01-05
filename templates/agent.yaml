@@ -4,12 +4,12 @@ metadata:
   name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-agent
   labels:
     {{- include "nlweb-dynamic-infrastructure-user.labels" . | nindent 4 }}
-    {{- range $key, $value := .Values.neoload.labels.agent }}
-    {{ $key }}: {{ $value | quote }}
+    {{- with .Values.neoload.labels.agent }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
   annotations:
-    {{- range $key, $value := .Values.neoload.annotations.agent }}
-    {{ $key }}: {{ $value | quote }}
+    {{- with .Values.neoload.annotations.agent }}
+    {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
   replicas: 1
@@ -20,12 +20,12 @@ spec:
     metadata:
       labels:
         {{- include "nlweb-dynamic-infrastructure-user.agent.selectorLabels" . | nindent 8 }}
-        {{- range $key, $value := .Values.neoload.labels.agent }}
-        {{ $key }}: {{ $value | quote }}
+        {{- with .Values.neoload.labels.agent }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
       annotations:
-        {{- range $key, $value := .Values.neoload.annotations.agent }}
-        {{ $key }}: {{ $value | quote }}
+        {{- with .Values.neoload.annotations.agent }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       serviceAccountName: {{ .Release.Name }}-sa

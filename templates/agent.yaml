@@ -48,7 +48,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .secretName }}
-                  key: {{ .secretKey | default "PROXY_USERNAME" }}
+                  key: {{ .secretKey | required "user secret key is required when specifying a secret name" }}
             {{- end }}
             {{- end }}
             {{- with .password }}
@@ -57,7 +57,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .secretName }}
-                  key: {{ .secretKey | default "PROXY_PASSWORD" }}
+                  key: {{ .secretKey | required "password secret key is required when specifying a secret name" }}
             {{- end }}
             {{- end }}
           {{- end }}

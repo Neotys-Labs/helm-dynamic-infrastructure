@@ -90,10 +90,10 @@ You can pass it as values otherwise.
 | `proxy.enabled`              | Enable proxy configuration for the agent                            | `false` |            |
 | `proxy.host`                 | Proxy server host (e.g., `proxy.example.com`)                       |         | if enabled |
 | `proxy.port`                 | Proxy server port (e.g., `8080`)                                    |         | if enabled |
-| `proxy.user`                 | Proxy username in plain text.                                       |         |            |
+| `proxy.user.value`           | Proxy username in plain text.                                       |         |            |
 | `proxy.user.secretName`      | Name of an existing Kubernetes secret containing the proxy username |         |            |
 | `proxy.user.secretKey`       | Key in the secret containing the proxy username                     |         |            |
-| `proxy.password`             | Proxy password in plain text.                                       |         |            |
+| `proxy.password.value`       | Proxy password in plain text.                                       |         |            |
 | `proxy.password.secretName`  | Name of an existing Kubernetes secret containing the proxy password |         |            |
 | `proxy.password.secretKey`   | Key in the secret containing the proxy password                     |         |            |
 

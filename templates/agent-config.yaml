@@ -30,7 +30,7 @@ data:
   {{- with .Values.proxy }}
   PROXY_ENABLED: {{ .enabled | quote }}
   {{- if .enabled }}
-  PROXY_URL: {{ .url | required "proxy.url is required when proxy.enabled is true" | quote }}
+  PROXY_HOST: {{ .host | required "proxy.host is required when proxy.enabled is true" | quote }}
   PROXY_PORT: {{ .port | required "proxy.port is required when proxy.enabled is true" | quote }}
   {{- end }}
   {{- end }}

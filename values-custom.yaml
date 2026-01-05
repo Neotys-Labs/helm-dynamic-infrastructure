@@ -4,13 +4,14 @@ agent:
   neoloadWebApiToken: "YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN"
   isOpenShiftCluster: false
 
-# proxy configuration:
-#   enabled: true
-#   url: "proxy.example.com"
-#   port: "8080"
-#   user:
-#     secretName: "my-proxy-secret"
-#     secretKey: "username"
-#   password:
-#     secretName: "my-proxy-secret"
-#     secretKey: "password"
+#Proxy configuration
+#proxy:
+#  enabled: true
+#  host: "proxy.example.com"
+#  port: "8080"
+#  user:
+#    secretName: "my-proxy-secret"
+#    secretKey: "username"
+#  password:
+#    secretName: "my-proxy-secret"
+#    secretKey: "password"

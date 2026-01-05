@@ -22,7 +22,7 @@ For a complete overview of all resources created in your cluster, see the [Detai
 
 ## Installation
 
-#### 1. Add the Neotys chart repository or update it if you already had it registered
+### 1. Add the Neotys chart repository or update it if you already had it registered
 
 ```bash		
 helm repo add neotys https://helm.prod.neotys.com/stable/
@@ -32,14 +32,14 @@ helm repo add neotys https://helm.prod.neotys.com/stable/
 helm repo update
 ```
 
-#### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
 
 ```bash
 wget https://raw.githubusercontent.com/Neotys-Labs/helm-dynamic-infrastructure/master/values-custom.yaml
 ``` 
 Refer to the [Configuration](#Configuration) section for configuration options.
 
-#### 3. Install
+### 3. Install
 
 ```bash		
 helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN

@@ -25,6 +25,6 @@ data:
 Prevent upgrade from old V0.x Chart to Agent-based Chart
 */}}
 {{- if and (not $previousAgentConfigDeployment) (gt .Release.Revision 1) }}
-{{- $error := printf "ERROR Cannot upgrade.\n You are attempting to upgrade NeoLoad Helm release from chart version 0.x to 1.x.\n Please install V1.x in a new deployment.\n For detailed migration instructions, please refer to the documentation: https://github.com/Neotys-Labs/helm-dynamic-infrastructure" -}}
+{{- $error := printf "ERROR Cannot upgrade.\n You are attempting to upgrade NeoLoad Helm release from chart version 0.x to 1.x.\n Please install V1.x as a new release.\n For detailed migration instructions, please refer to the documentation: https://github.com/Neotys-Labs/helm-dynamic-infrastructure" -}}
 {{ required $error "" }}
 {{- end }}

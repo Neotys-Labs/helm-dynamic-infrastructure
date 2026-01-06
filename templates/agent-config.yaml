@@ -10,7 +10,7 @@ data:
   KUBERNETES_NAMESPACE:  {{ .Release.Namespace | quote }}
   RELEASE_NAME: {{ .Release.Name | quote }}
   NLW_API_URL: {{ .Values.agent.neoloadWebApiUrl | quote }}
-  AGENT_UUID: {{ coalesce .Values.agent.uuid $previousAgentConfigDeployment.data.AGENT_UUID (randAlphaNum 32 | nospace) | quote }}
+  AGENT_UUID: {{ coalesce .Values.agent.uuid (dig "data" "AGENT_UUID" "" $previousAgentConfigDeployment) (randAlphaNum 32 | nospace) | quote }}
 
   {{- with .Values.agent.name }}
   AGENT_NAME: {{ . | quote }}

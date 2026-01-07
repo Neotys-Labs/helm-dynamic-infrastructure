@@ -30,9 +30,9 @@ resources:
 
 neoload:
   labels:
-    agent:
+    agent: {}
   annotations:
-    agent:
+    agent: {}
 
 securityContext:
   capabilities:
@@ -40,3 +40,5 @@ securityContext:
       - ALL
   allowPrivilegeEscalation: false
   runAsNonRoot: true
+
+podSecurityContext: {}

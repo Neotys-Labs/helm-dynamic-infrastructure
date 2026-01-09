@@ -1,5 +1,5 @@
 
-# Neoload Web dynamic infrastructure agent
+# NeoLoad Web dynamic infrastructure agent
 
 ## Introduction
 
@@ -22,7 +22,7 @@ For a complete overview of all resources created in your cluster, see the [Detai
 
 ## Installation
 
-#### 1. Add the Neotys chart repository or update it if you already had it registered
+### 1. Add the Neotys chart repository or update it if you already had it registered
 
 ```bash		
 helm repo add neotys https://helm.prod.neotys.com/stable/
@@ -32,14 +32,14 @@ helm repo add neotys https://helm.prod.neotys.com/stable/
 helm repo update
 ```
 
-#### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
 
 ```bash
 wget https://raw.githubusercontent.com/Neotys-Labs/helm-dynamic-infrastructure/master/values-custom.yaml
 ``` 
 Refer to the [Configuration](#Configuration) section for configuration options.
 
-#### 3. Install
+### 3. Install
 
 ```bash		
 helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN
@@ -61,10 +61,10 @@ Update `values-custom.yaml` file according to your needs.
 
 | Parameter                  | Description                                                                                                                                                                                                                                      | Default                                                     | Required |
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|:--------:|
-| `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4)                                                                                                                                                                                                  |                                                             |    ✅     |
 | `agent.neoloadWebApiToken` | NeoLoad Web long-term token.<br/>Recommended to set this sensitive information with commandline `--set agent.neoloadWebApiToken=TOKEN`                                                                                                           |                                                             |    ✅     |
+| `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4).<br/>By default SaaS US URL is provided; verify that it matches your NeoLoad Web environment and override it if your instance uses a different endpoint.                                         | https://neoload-api.saas.neotys.com                         |          |
 | `agent.name`               | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |          |
-| `agent.isOpenShiftCluster` | Set to `true` if current cluster is Openshift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
+| `agent.isOpenShiftCluster` | Set to `true` if current cluster is OpenShift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
 | `agent.uuid`               | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)       |          |
 
 ### Docker registry (optional)

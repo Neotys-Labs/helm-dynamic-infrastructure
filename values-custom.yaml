@@ -2,6 +2,8 @@ agent:
   # name: ""
   neoloadWebApiUrl: "https://neoload-api.saas.neotys.com"
   isOpenShiftCluster: false
+  # WARNING: Do NOT hard-code or commit the NeoLoad Web API token in this file.
+  # Instead, pass it at install/upgrade time with commandline argument `--set agent.neoloadWebApiToken=TOKEN`
 
 #Proxy configuration
 #proxy:

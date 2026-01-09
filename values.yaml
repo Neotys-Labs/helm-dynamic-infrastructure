@@ -30,9 +30,9 @@ resources:
 
 neoload:
   labels:
-    agent:
+    agent: {}
   annotations:
-    agent:
+    agent: {}
 
 securityContext:
   capabilities:
@@ -43,3 +43,5 @@ securityContext:
 
 proxy:
   enabled: false
+
+podSecurityContext: {}

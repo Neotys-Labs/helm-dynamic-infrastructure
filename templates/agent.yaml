@@ -39,6 +39,29 @@ spec:
           imagePullPolicy: {{ .Values.image.agent.pullPolicy }}
           resources:
             {{- toYaml .Values.resources.agent | nindent 12 }}
+          {{- with .Values.proxy }}
+          {{- if and .enabled (or .user.secretName .password.secretName) }}
+          env:
+            {{- with .user }}
+            {{- if .secretName }}
+            - name: PROXY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .secretKey | required "user secret key is required when specifying a secret name" }}
+            {{- end }}
+            {{- end }}
+            {{- with .password }}
+            {{- if .secretName }}
+            - name: PROXY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretName }}
+                  key: {{ .secretKey | required "password secret key is required when specifying a secret name" }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-agent-config

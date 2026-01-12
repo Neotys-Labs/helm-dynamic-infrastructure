@@ -32,7 +32,10 @@ neoload:
   labels:
     agent: {}
   annotations:
-    agent: {}
+    deployment:
+      agent: {}
+    pod:
+      agent: {}
 
 securityContext:
   capabilities:

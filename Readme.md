@@ -42,7 +42,7 @@ kubectl create namespace my-namespace
 4. Install with the following command
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace -f ./values-custom.yaml
+helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace -f ./values-custom.yaml --version ^0
 ```
 
 > Since Helm 3.2+ you can skip step 3, and add the --create-namespace option to this command

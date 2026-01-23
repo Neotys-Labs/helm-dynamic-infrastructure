@@ -11,7 +11,7 @@ serviceAccount:
 
 registryKey:
   enabled: false
-  registry: https://registry.hub.docker.com
+  registry: docker.io
   username: userName
   password: password
 
@@ -19,6 +19,7 @@ image:
   agent:
     repository: neotys/neoload-web-dynamic-infrastructure-agent
     pullPolicy: IfNotPresent
+    imagePullSecrets: []
 
 resources:
   agent:

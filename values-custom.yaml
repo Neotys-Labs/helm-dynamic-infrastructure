@@ -16,3 +16,10 @@ agent:
 #  password:
 #    secretName: "my-proxy-secret"
 #    secretKey: "password"
+
+# Private registry configuration
+#registryKey:
+#  enabled: true
+#  registry: docker.io
+#  username: userName
+#  password: password

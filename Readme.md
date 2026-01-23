@@ -22,10 +22,10 @@ For a complete overview of all resources created in your cluster, see the [Detai
 
 ## Installation
 
-### 1. Add the Neotys chart repository or update it if you already had it registered
+### 1. Add the NeoLoad chart repository or update it if you already had it registered
 
 ```bash		
-helm repo add neotys https://helm.prod.neotys.com/stable/
+helm repo add NeoLoad https://helm.prod.neotys.com/stable/
 ```
 
 ```bash		
@@ -42,7 +42,7 @@ Refer to the [Configuration](#Configuration) section for configuration options.
 ### 3. Install
 
 ```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN
+helm install my-release NeoLoad/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN
 ```
 
 ## Uninstall
@@ -70,28 +70,29 @@ Update `values-custom.yaml` file according to your needs.
 
 ### Agent advanced configuration
 
-| Parameter                              | Description                                                                                                                                                                                                                                      | Default                                                     |
-|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| `agent.name`                           | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name |
-| `agent.uuid`                           | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)       |
-| `image.agent.repository`               | The agent image repository to pull from                                                                                                                                                                                                          | `neotys/neoload-web-dynamic-infrastructure-agent`           |
-| `image.agent.tag`                      | The agent image tag                                                                                                                                                                                                                              | See appVersion in [Chart.yaml](./Chart.yaml)                |
-| `image.agent.pullPolicy`               | The agent image pull policy                                                                                                                                                                                                                      | `IfNotPresent`                                              |
-| `neoload.labels.agent`                 | Add labels to agent resources e.g. `key: value`.                                                                                                                                                                                                 | `{}`                                                        |
-| `neoload.annotations.deployment.agent` | Add annotations to agent deployment e.g. `key: value`.                                                                                                                                                                                           | `{}`                                                        |
-| `neoload.annotations.pod.agent`        | Add annotations to agent pod e.g. `key: value`.                                                                                                                                                                                                  | `{}`                                                        |
+| Parameter                              | Description                                                                                                                                                                                                                                      | Default                                                                                                         |
+|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `agent.name`                           | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name                                                     |
+| `agent.uuid`                           | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)                                                           |
+| `image.agent.repository`               | The agent image repository to pull from                                                                                                                                                                                                          | `neotys/neoload-web-dynamic-infrastructure-agent`                                                               |
+| `image.agent.tag`                      | The agent image tag                                                                                                                                                                                                                              | See appVersion in [Chart.yaml](./Chart.yaml)                                                                    |
+| `image.agent.pullPolicy`               | The agent image pull policy                                                                                                                                                                                                                      | `IfNotPresent`                                                                                                  |
+| `image.agent.imagePullSecrets`         | Override the the pull secret(s) of the agent container.                                                                                                                                                                                          | If a `registryKey` is configured, agent container will use this `registryKey`, otherwise no pullSecrets are set |
+| `neoload.labels.agent`                 | Add labels to agent resources e.g. `key: value`.                                                                                                                                                                                                 | `{}`                                                                                                            |
+| `neoload.annotations.deployment.agent` | Add annotations to agent deployment e.g. `key: value`.                                                                                                                                                                                           | `{}`                                                                                                            |
+| `neoload.annotations.pod.agent`        | Add annotations to agent pod e.g. `key: value`.                                                                                                                                                                                                  | `{}`                                                                                                            |
 
 ### Docker registry (optional)
 
 Configure a private docker registry to pull the docker images of the Controller and Load generator.\
 The Docker image names and pull secret are defined in NeoLoad Web's infrastructure provider.
 
-| Parameter              | Description                                                                                                                          | Default |
-|------------------------|--------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `registryKey.enabled`  | Enable registry key to pull docker images                                                                                            | `false` |
-| `registryKey.registry` | Docker registry URL                                                                                                                  |         |
-| `registryKey.username` | User name of docker registry                                                                                                         |         |
-| `registryKey.password` | Password name of docker registry<br/>Recommended to set this sensitive information with commandline `--set registryKey.password=PWD` |         |
+| Parameter              | Description                                                                                                                                                      | Default |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `registryKey.enabled`  | Enable registry key to pull docker images                                                                                                                        | `false` |
+| `registryKey.registry` | Docker registry URL e.g. `docker.io`                                                                                                                             |         |
+| `registryKey.username` | User name of docker registry                                                                                                                                     |         |
+| `registryKey.password` | Password name of docker registry<br/>Can be a dockerHub PAT.<br/>Recommended to set this sensitive information with commandline `--set registryKey.password=PWD` |         |
 
 ### Proxy configuration (optional)
 

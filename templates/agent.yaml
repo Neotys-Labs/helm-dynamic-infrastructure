@@ -49,7 +49,7 @@ spec:
           resources:
             {{- toYaml .Values.resources.agent | nindent 12 }}
           {{- with .Values.proxy }}
-          {{- if and .enabled (or .user.secretName .password.secretName) }}
+          {{- if and .enabled (or (dig "user" "secretName" "" .) (dig "password" "secretName" "" .)) }}
           env:
             {{- with .user }}
             {{- if .secretName }}

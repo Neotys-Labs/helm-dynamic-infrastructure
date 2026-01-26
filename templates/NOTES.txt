@@ -1,4 +1,5 @@
 {{ if .Values.registryKey.enabled -}}
-- Set the image pull secret by running this command:
-kubectl patch sa {{ .Release.Name }}-sa -p '{"imagePullSecrets": [{"name": "{{ .Release.Name }}-rk"}]}' -n {{ .Release.Namespace }}
+Image pull secret name:
+{{ .Release.Name }}-rk
+To use controller and/or load-generator images from your private registry, please enter "{{ .Release.Name }}-rk" in NeoLoad Web dynamic zone configuration field "Image pull secret".
 {{- end }}

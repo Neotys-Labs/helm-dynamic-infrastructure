@@ -33,6 +33,13 @@ spec:
       serviceAccountName: {{ .Release.Name }}-sa
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.image.agent.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.agent.imagePullSecrets | nindent 8 }}
+      {{- else if .Values.registryKey.enabled }}
+      imagePullSecrets:
+        - name: {{ .Release.Name }}-rk
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-agent
           securityContext:

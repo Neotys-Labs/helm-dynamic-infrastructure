@@ -29,6 +29,12 @@ data:
   {{- end }}
   {{- end }}
 
+  {{- with .Values.agent.env }}
+  {{- range $key, $value := . }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+
 
 {{/*
 Prevent upgrade from old V0.x Chart to Agent-based Chart

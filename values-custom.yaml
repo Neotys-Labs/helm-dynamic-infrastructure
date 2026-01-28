@@ -5,6 +5,10 @@ agent:
   # WARNING: Do NOT hard-code or commit the NeoLoad Web API token in this file.
   # Instead, pass it at install/upgrade time with commandline argument `--set agent.neoloadWebApiToken=TOKEN`
 
+  #Custom environment variables for the agent
+  #env:
+  #  NAME: "value"
+
 #Proxy configuration
 #proxy:
 #  enabled: true

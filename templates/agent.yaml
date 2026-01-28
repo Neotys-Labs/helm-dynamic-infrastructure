@@ -76,3 +76,11 @@ spec:
                 name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-agent-config
             - secretRef:
                 name: {{ include "nlweb-dynamic-infrastructure-user.fullname" . }}-nlweb-secrets
+          {{- with .Values.agent.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.agent.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

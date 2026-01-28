@@ -74,6 +74,7 @@ Update `values-custom.yaml` file according to your needs.
 |----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | `agent.name`                           | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name                                                                             |
 | `agent.uuid`                           | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)                                                                                   |
+| `agent.env`                            | Custom environment variables to add to the agent deployment.<br/>Define as a map of key-value pairs e.g. `VAR: "value"`.                                                                                                                         | `{}`                                                                                                                                    |
 | `image.agent.repository`               | The agent image repository to pull from                                                                                                                                                                                                          | `neotys/neoload-web-dynamic-infrastructure-agent`                                                                                       |
 | `image.agent.tag`                      | The agent image tag                                                                                                                                                                                                                              | See appVersion in [Chart.yaml](./Chart.yaml)                                                                                            |
 | `image.agent.pullPolicy`               | The agent image pull policy                                                                                                                                                                                                                      | `IfNotPresent`                                                                                                                          |
@@ -81,6 +82,8 @@ Update `values-custom.yaml` file according to your needs.
 | `neoload.labels.agent`                 | Add labels to agent resources e.g. `key: value`.                                                                                                                                                                                                 | `{}`                                                                                                                                    |
 | `neoload.annotations.deployment.agent` | Add annotations to agent deployment e.g. `key: value`.                                                                                                                                                                                           | `{}`                                                                                                                                    |
 | `neoload.annotations.pod.agent`        | Add annotations to agent pod e.g. `key: value`.                                                                                                                                                                                                  | `{}`                                                                                                                                    |
+| `agent.volumeMounts`                   | Additional volume mounts to add to the agent container                                                                                                                                                                                           | `[]`                                                                                                                                    |
+| `agent.volumes`                        | Additional volumes to add to the agent pod. Used in combination with `agent.volumeMounts`.                                                                                                                                                       | `[]`                                                                                                                                    |
 
 ### Docker registry (optional)
 
@@ -112,6 +115,33 @@ You can pass it as values otherwise.
 | `proxy.password.secretName`  | Name of an existing Kubernetes secret containing the proxy password |         |            |
 | `proxy.password.secretKey`   | Key in the secret containing the proxy password                     |         |            |
 
+#### Using a proxy with self-signed HTTPS certificate
+
+If your proxy uses a self-signed certificate, you can pass a custom truststore to the agent :
+
+Create a Secret with your truststore
+
+```bash
+kubectl create secret generic java-truststore --from-file=truststore.jks=/path/to/your/truststore.jks -n my-namespace
+```
+
+Use these in your `values-custom.yaml` to mount the truststore and set java options as environment variable :
+
+
+```yaml
+agent:
+  env:
+    JAVA_TOOL_OPTIONS: "-Djavax.net.ssl.trustStore=/etc/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
+  volumeMounts:
+    - name: truststore-volume
+      mountPath: /etc/ssl/truststore.jks
+      subPath: truststore.jks
+      readOnly: true
+  volumes:
+    - name: truststore-volume
+      secret:
+        secretName: java-truststore
+```
 
 ## Details
 

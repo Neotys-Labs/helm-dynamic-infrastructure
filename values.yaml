@@ -11,6 +11,41 @@ serviceAccount:
 
 registryKey:
   enabled: false
-  registry: https://registry.hub.docker.com
+  registry: docker.io
   username: userName
   password: password
+
+image:
+  agent:
+    repository: neotys/neoload-web-dynamic-infrastructure-agent
+    pullPolicy: IfNotPresent
+    imagePullSecrets: []
+
+resources:
+  agent:
+    limits:
+      memory: 500Mi
+    requests:
+      memory: 500Mi
+      cpu: 100m
+
+neoload:
+  labels:
+    agent: {}
+  annotations:
+    deployment:
+      agent: {}
+    pod:
+      agent: {}
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+
+proxy:
+  enabled: false
+
+podSecurityContext: {}

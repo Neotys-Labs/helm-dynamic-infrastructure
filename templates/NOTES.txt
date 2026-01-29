@@ -1,13 +1,5 @@
-1. Get the Kubernetes control plane URL by running this command:
-kubectl cluster-info | grep -e 'Kubernetes control plane' -e 'Kubernetes master'
-
-2. Kubernetes namespace is:
-{{ .Release.Namespace }}
-
-3. Get the API token to use by running this command:
-kubectl get secret {{ .Release.Name }}-secret -o jsonpath='{.data.token}' -n {{ .Release.Namespace }} | base64 --decode
-
 {{ if .Values.registryKey.enabled -}}
-4. To set the image pull secret:
-kubectl patch sa {{ .Release.Name }}-sa -p '{"imagePullSecrets": [{"name": "{{ .Release.Name }}-rk"}]}' -n {{ .Release.Namespace }}
+Image pull secret name:
+{{ .Release.Name }}-rk
+To use controller and/or load-generator images from your private registry, please enter "{{ .Release.Name }}-rk" in NeoLoad Web dynamic zone configuration field "Image pull secret".
 {{- end }}

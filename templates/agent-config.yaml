@@ -1,0 +1,45 @@
+{{- $metadataName := printf "%s-agent-config" (include "nlweb-dynamic-infrastructure-user.fullname" .) -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $metadataName }}
+
+{{- $previousAgentConfigDeployment := lookup "v1" "ConfigMap" .Release.Namespace $metadataName }}
+data:
+  KUBERNETES_NAMESPACE:  {{ .Release.Namespace | quote }}
+  RELEASE_NAME: {{ .Release.Name | quote }}
+  NLW_API_URL: {{ .Values.agent.neoloadWebApiUrl | quote }}
+  # UUID is the one from values file if defined, else reuse the one defined in the previous deployment (in case of helm upgrade), else generate a new one
+  AGENT_UUID: {{ coalesce .Values.agent.uuid (dig "data" "AGENT_UUID" "" $previousAgentConfigDeployment) (randAlphaNum 32 | nospace) | quote }}
+
+  {{- with .Values.agent.name }}
+  AGENT_NAME: {{ . | quote }}
+  {{- end }}
+
+  {{- with .Values.agent.isOpenShiftCluster }}
+  IS_OPENSHIFT_CLUSTER: {{ . | quote }}
+  {{- end }}
+
+  {{- with .Values.proxy }}
+  PROXY_ENABLED: {{ .enabled | quote }}
+  {{- if .enabled }}
+  PROXY_HOST: {{ .host | required "proxy.host is required when proxy.enabled is true" | quote }}
+  PROXY_PORT: {{ .port | required "proxy.port is required when proxy.enabled is true" | quote }}
+  {{- end }}
+  {{- end }}
+
+  {{- with .Values.agent.env }}
+  {{- range $key, $value := . }}
+  {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+
+
+{{/*
+Prevent upgrade from old V0.x Chart to Agent-based Chart
+*/}}
+{{- if and (not $previousAgentConfigDeployment) (gt .Release.Revision 1) }}
+{{- $error := printf "ERROR Cannot upgrade.\nYou are attempting to upgrade a NeoLoad Helm release from chart version 0.x to 1.x, which is not supported.\nTo migrate:\n  1) Install chart version 1.x as a new Helm release (with a different release name).\n  2) Configure a zone with a dynamic infrastructure provider in NeoLoad Web and validate it.\n  3) Once validated, uninstall the old 0.x release.\n  See detailed migration instructions in the readme: https://github.com/Neotys-Labs/helm-dynamic-infrastructure." -}}
+{{ required $error "" }}
+{{- end }}

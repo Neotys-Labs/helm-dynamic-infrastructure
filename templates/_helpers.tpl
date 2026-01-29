@@ -52,12 +52,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
-Create the name of the service account to use
+Agent Selector labels
 */}}
-{{- define "nlweb-dynamic-infrastructure-user.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create -}}
-    {{ default (include "nlweb-dynamic-infrastructure-user.fullname" .) .Values.serviceAccount.name }}
-{{- else -}}
-    {{ default "default" .Values.serviceAccount.name }}
-{{- end -}}
+{{- define "nlweb-dynamic-infrastructure-user.agent.selectorLabels" -}}
+{{ include "nlweb-dynamic-infrastructure-user.selectorLabels" . }}
+app.kubernetes.io/component: agent
 {{- end -}}

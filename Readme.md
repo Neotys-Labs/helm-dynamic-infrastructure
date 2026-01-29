@@ -1,10 +1,18 @@
 
-# Neoload Web dynamic infrastructure user access
+# NeoLoad Web dynamic infrastructure agent
 
-# Introduction
+## Introduction
 
-This chart deploys user credentials to use Neoload Web Dynamic infrastructure on a Kubernetes cluster.
-In the [details chapter](#details) you can have an overview of every objects created in the cluster.
+This Helm chart enables performance engineers to automatically deploy load testing infrastructure on a Kubernetes cluster through NeoLoad Web.
+It provisions the required user credentials and deploys an agent that connects your cluster to NeoLoad Web's Dynamic Infrastructure feature.
+
+For a complete overview of all resources created in your cluster, see the [Details](#details) section.
+
+> [!IMPORTANT]
+> Two versions of this chart are available:
+>
+> - **v1.x (Latest)** — Deploys an agent that communicates with NeoLoad Web. This version is more secure as it uses outbound-only connections. **Recommended for environments with strict security requirements.**
+> - **v0.x** — Requires direct inbound API access to the cluster from NeoLoad Web. A simpler setup that works well when inbound access is acceptable. To migrate from v0.x to v1.x, see the [Migration guide](doc/MIGRATION_GUIDE_V0_TO_V1.md). To install v0.x, see the [v0.x Readme](https://github.com/Neotys-Labs/helm-dynamic-infrastructure/blob/stable/v0_x/Readme.md).
 
 ## Prerequisites
 
@@ -14,40 +22,28 @@ In the [details chapter](#details) you can have an overview of every objects cre
 
 ## Installation
 
-1. Add the Neotys chart repository or update it if you already had it registered
+### 1. Add the NeoLoad chart repository or update it if you already had it registered
 
 ```bash		
-helm repo add neotys https://helm.prod.neotys.com/stable/
+helm repo add NeoLoad https://helm.prod.neotys.com/stable/
 ```
 
 ```bash		
 helm repo update
 ```
 
-2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
+### 2. Download and set up your **[values-custom.yaml](/values-custom.yaml)** file
 
 ```bash
 wget https://raw.githubusercontent.com/Neotys-Labs/helm-dynamic-infrastructure/master/values-custom.yaml
 ``` 
-> You can refer to the ['Configuration'](#Configuration) section for basic configuration options.
->
-> You can skip this step if you have nothing to change in the configuration.
+Refer to the [Configuration](#Configuration) section for configuration options.
 
-3. Create a dedicated namespace
+### 3. Install
 
 ```bash		
-kubectl create namespace my-namespace
+helm install my-release NeoLoad/nlweb-dynamic-infrastructure --create-namespace -n my-namespace -f ./values-custom.yaml --set agent.neoloadWebApiToken=YOUR_NEOLOAD_WEB_LONG_TERM_TOKEN
 ```
-
-4. Install with the following command
-
-```bash		
-helm install my-release neotys/nlweb-dynamic-infrastructure -n my-namespace -f ./values-custom.yaml
-```
-
-> Since Helm 3.2+ you can skip step 3, and add the --create-namespace option to this command
-> 
-> If you do not uses custom values you can remove "-f ./values-custom.yaml" from the command.
 
 ## Uninstall
 
@@ -59,30 +55,114 @@ $ helm uninstall my-release -n my-namespace
 
 ## Configuration
 
-Parameter | Description | Default
------ | ----------- | -------
-`registryKey.enabled` | Enable registry key to pull docker images | `false`
-`registryKey.registry` | Docker registry URL |
-`registryKey.username` | User name of docker registry |
-`registryKey.password` | Password name of docker registry |
+Update `values-custom.yaml` file according to your needs.
+
+### Agent configuration
+
+| Parameter                  | Description                                                                                                                                                                                                                                      | Default                                                     | Required |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------|:--------:|
+| `agent.neoloadWebApiToken` | NeoLoad Web long-term token.<br/>Recommended to set this sensitive information with commandline `--set agent.neoloadWebApiToken=TOKEN`                                                                                                           |                                                             |    ✅     |
+| `agent.neoloadWebApiUrl`   | The URL to NeoLoad Web API (API V3, not API V4).<br/>By default SaaS US URL is provided; verify that it matches your NeoLoad Web environment and override it if your instance uses a different endpoint.                                         | https://neoload-api.saas.neotys.com                         |          |
+| `agent.isOpenShiftCluster` | Set to `true` if current cluster is OpenShift.<br/>Set to `false` if Kubernetes                                                                                                                                                                  | `false`                                                     |          |
+
+> [!NOTE]
+> Agent deployment requires 1 replica because only 1 agent with the same id must be connected to NeoLoad Web at a time. Having multiple replicas will introduce concurrency issues.
+
+### Agent advanced configuration
+
+| Parameter                              | Description                                                                                                                                                                                                                                      | Default                                                                                                                                 |
+|----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `agent.name`                           | Agent friendly name that will be displayed in NeoLoad Web                                                                                                                                                                                        | default name is a combination of namespace and release name                                                                             |
+| `agent.uuid`                           | Agent UUID to uniquely identify the agent in NeoLoad Web.<br/>It is recommended not to define it in order to leave the generated value. Only useful if you want to uninstall/re-install the release and appear in NeoLoad Web as the same agent. | id is generated at installation (and kept at upgrade)                                                                                   |
+| `agent.env`                            | Custom environment variables to add to the agent deployment.<br/>Define as a map of key-value pairs e.g. `VAR: "value"`.                                                                                                                         | `{}`                                                                                                                                    |
+| `image.agent.repository`               | The agent image repository to pull from                                                                                                                                                                                                          | `neotys/neoload-web-dynamic-infrastructure-agent`                                                                                       |
+| `image.agent.tag`                      | The agent image tag                                                                                                                                                                                                                              | See appVersion in [Chart.yaml](./Chart.yaml)                                                                                            |
+| `image.agent.pullPolicy`               | The agent image pull policy                                                                                                                                                                                                                      | `IfNotPresent`                                                                                                                          |
+| `image.agent.imagePullSecrets`         | Override the pull secret(s) of the agent container. When set, this takes precedence over `registryKey`.                                                                                                                                          | By default, if `registryKey` is configured, the agent uses the generated `registryKey` secret; otherwise, no `imagePullSecrets` are set |
+| `neoload.labels.agent`                 | Add labels to agent resources e.g. `key: value`.                                                                                                                                                                                                 | `{}`                                                                                                                                    |
+| `neoload.annotations.deployment.agent` | Add annotations to agent deployment e.g. `key: value`.                                                                                                                                                                                           | `{}`                                                                                                                                    |
+| `neoload.annotations.pod.agent`        | Add annotations to agent pod e.g. `key: value`.                                                                                                                                                                                                  | `{}`                                                                                                                                    |
+| `agent.volumeMounts`                   | Additional volume mounts to add to the agent container                                                                                                                                                                                           | `[]`                                                                                                                                    |
+| `agent.volumes`                        | Additional volumes to add to the agent pod. Used in combination with `agent.volumeMounts`.                                                                                                                                                       | `[]`                                                                                                                                    |
+
+### Docker registry (optional)
+
+Configure a private docker registry to pull the docker images of the Controller and Load generator.\
+The Docker image names and pull secret are defined in NeoLoad Web's infrastructure provider.
+
+| Parameter              | Description                                                                                                                                                      | Default |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `registryKey.enabled`  | Enable registry key to pull docker images                                                                                                                        | `false` |
+| `registryKey.registry` | Docker registry URL e.g. `docker.io`                                                                                                                             |         |
+| `registryKey.username` | User name of docker registry                                                                                                                                     |         |
+| `registryKey.password` | Password name of docker registry<br/>Can be a dockerHub PAT.<br/>Recommended to set this sensitive information with commandline `--set registryKey.password=PWD` |         |
+
+### Proxy configuration (optional)
+
+Configure proxy settings for the agent. If enabled, you must provide a host and port.
+To set credentials, recommended way would be to create a secret prior to installing this helm chart, and referring to it via secret name and key. 
+You can pass it as values otherwise.
+
+| Parameter                    | Description                                                         | Default |  Required  |
+|------------------------------|---------------------------------------------------------------------|---------|:----------:|
+| `proxy.enabled`              | Enable proxy configuration for the agent                            | `false` |            |
+| `proxy.host`                 | Proxy server host (e.g., `proxy.example.com`)                       |         | if enabled |
+| `proxy.port`                 | Proxy server port (e.g., `8080`)                                    |         | if enabled |
+| `proxy.user.value`           | Proxy username in plain text.                                       |         |            |
+| `proxy.user.secretName`      | Name of an existing Kubernetes secret containing the proxy username |         |            |
+| `proxy.user.secretKey`       | Key in the secret containing the proxy username                     |         |            |
+| `proxy.password.value`       | Proxy password in plain text.                                       |         |            |
+| `proxy.password.secretName`  | Name of an existing Kubernetes secret containing the proxy password |         |            |
+| `proxy.password.secretKey`   | Key in the secret containing the proxy password                     |         |            |
+
+#### Using a proxy with self-signed HTTPS certificate
+
+If your proxy uses a self-signed certificate, you can pass a custom truststore to the agent :
+
+Create a Secret with your truststore
+
+```bash
+kubectl create secret generic java-truststore --from-file=truststore.jks=/path/to/your/truststore.jks -n my-namespace
+```
+
+Use these in your `values-custom.yaml` to mount the truststore and set java options as environment variable :
+
+
+```yaml
+agent:
+  env:
+    JAVA_TOOL_OPTIONS: "-Djavax.net.ssl.trustStore=/etc/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
+  volumeMounts:
+    - name: truststore-volume
+      mountPath: /etc/ssl/truststore.jks
+      subPath: truststore.jks
+      readOnly: true
+  volumes:
+    - name: truststore-volume
+      secret:
+        secretName: java-truststore
+```
 
 ## Details
 
 This chart creates:
  1. A namespace called `my-namespace`
- 1. A role called `my-release-role` with the following rules:
-	``` yaml
-	rules:
-	- apiGroups: [ "apps", "extensions" ]
-	  resources: ["deployments", "replicasets"]
-	  verbs: ["get", "list", "create", "update", "patch", "delete"]
-	- apiGroups: [ "" ]
-	  resources: ["pods", "events"]
-	  verbs: ["get", "list"]
-	- apiGroups: [ "" ]
-	  resources: ["replicationcontrollers"]
-	  verbs: ["get", "list", "create", "update", "patch", "delete"]
-	```
- 1. A role binding called `my-release-rolebinding`
- 1. A service account called `my-release-sa`
+ 2. A role called `my-release-role` with the following rules:
+    ``` yaml
+    rules:
+    - apiGroups: [ "apps", "extensions" ]
+      resources: ["deployments", "replicasets"]
+      verbs: ["get", "list", "create", "update", "patch", "delete"]
+    - apiGroups: [ "" ]
+      resources: ["pods", "events"]
+      verbs: ["get", "list"]
+    - apiGroups: [ "" ]
+      resources: ["replicationcontrollers"]
+      verbs: ["get", "list", "create", "update", "patch", "delete"]
+    ```
+ 3. A role binding called `my-release-rolebinding`
+ 4. A service account called `my-release-sa`
+ 5. A config map for agent environment variables called `my-release-nlweb-dynamic-infrastructure-agent-config`
+ 6. A secret to store NeoLoad Web long-term token `my-release-nlweb-dynamic-infrastructure-nlweb-secrets`
+ 7. A deployment for the agent pod called `my-release-nlweb-dynamic-infrastructure-agent`
 

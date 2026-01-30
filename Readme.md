@@ -117,7 +117,20 @@ You can pass it as values otherwise.
 
 #### Using a proxy with self-signed HTTPS certificate
 
-If your proxy uses a self-signed certificate, you can pass a custom truststore to the agent :
+**If you want to trust all certificates**, you can add :
+```yaml
+agent:
+  env:
+    TLS_INSECURE: true
+```
+
+Or you can **pass the correct truststore to the agent :**
+
+Generate the JKS truststore (using `keytool` - included in the Java JDK) :
+
+```bash
+keytool -import -trustcacerts -alias proxy-cert -file /path/to/proxy-certificate.pem -keystore truststore.jks -storepass changeit
+```
 
 Create a Secret with your truststore
 

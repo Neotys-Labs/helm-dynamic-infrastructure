@@ -16,9 +16,9 @@ For a complete overview of all resources created in your cluster, see the [Detai
 
 ## Prerequisites
 
-- A running [Kubernetes](https://kubernetes.io/) cluster (1.9.0 - 1.30.0)
 - [Helm](https://helm.sh/docs/intro/install/) CLI  (3.2+)
-
+- A running [Kubernetes](https://kubernetes.io/) cluster (1.18+)
+  - Actively supported versions are those that are currently maintained by Kubernetes ([see supported versions](https://kubernetes.io/releases/patch-releases/#detailed-release-history-for-active-branches))
 
 ## Installation
 

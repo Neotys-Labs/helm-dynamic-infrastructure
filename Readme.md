@@ -103,6 +103,8 @@ Configure proxy settings for the agent. If enabled, you must provide a host and 
 To set credentials, recommended way would be to create a secret prior to installing this helm chart, and referring to it via secret name and key. 
 You can pass it as values otherwise.
 
+When the proxy is enabled, Controllers and Load Generators deployed by this chart connect to NeoLoad Web through it.
+
 | Parameter                    | Description                                                         | Default |  Required  |
 |------------------------------|---------------------------------------------------------------------|---------|:----------:|
 | `proxy.enabled`              | Enable proxy configuration for the agent                            | `false` |            |
@@ -117,14 +119,20 @@ You can pass it as values otherwise.
 
 #### Using a proxy with self-signed HTTPS certificate
 
-**If you want to trust all certificates**, you can add :
+##### You can trust all certificates:
+
+Set this environment variable to `true` to disable TLS certificate verification (insecure). That applies to:
+- Connections from the Agent to NeoLoad Web.
+- Connections from Controllers and Load Generators deployed by this chart to NeoLoad Web.
 ```yaml
 agent:
   env:
     TLS_INSECURE: true
 ```
 
-Or you can **pass the correct truststore to the agent :**
+##### Or you can pass the correct truststore to the agent:
+
+_Note:_ Controllers and Load Generators may need the same trust configuration to reach NeoLoad Web. This chart does not configure that for those components—you must set it up separately.
 
 Generate the JKS truststore (using `keytool` - included in the Java JDK) :
 

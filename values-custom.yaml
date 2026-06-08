@@ -9,6 +9,24 @@ agent:
   #env:
   #  NAME: "value"
 
+  #Schedule the agent on a specific node (optional)
+#  nodeSelector:
+#    kubernetes.io/hostname: my-node-name
+#  tolerations:
+#    - key: "dedicated"
+#      operator: "Equal"
+#      value: "neoload"
+#      effect: "NoSchedule"
+#  affinity:
+#    nodeAffinity:
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        nodeSelectorTerms:
+#          - matchExpressions:
+#              - key: kubernetes.io/hostname
+#                operator: In
+#                values:
+#                  - my-node-name
+
 #Proxy configuration
 #proxy:
 #  enabled: true

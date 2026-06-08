@@ -85,6 +85,19 @@ Update `values-custom.yaml` file according to your needs.
 | `agent.volumeMounts`                   | Additional volume mounts to add to the agent container                                                                                                                                                                                           | `[]`                                                                                                                                    |
 | `agent.volumes`                        | Additional volumes to add to the agent pod. Used in combination with `agent.volumeMounts`.                                                                                                                                                       | `[]`                                                                                                                                    |
 
+Default resource requests and limits are defined in [values.yaml](./values.yaml). Override them in `values-custom.yaml`:
+
+```yaml
+resources:
+  agent:
+    limits:
+      memory: 1Gi
+      cpu: 500m
+    requests:
+      memory: 512Mi
+      cpu: 200m
+```
+
 ### Docker registry (optional)
 
 Configure a private docker registry to pull the docker images of the Controller and Load generator.\

@@ -49,3 +49,11 @@ proxy:
   enabled: false
 
 podSecurityContext: {}
+
+tolerations: []
+# Exemple :
+# tolerations:
+# - key: "dedicated"
+#   operator: "Equal"
+#   value: "neoload"
+#   effect: "NoSchedule"
